@@ -57,7 +57,7 @@ function RenderSteps() {
             }
         </div>
         {/* pages related to steps */}
-        <div className=' bg-richblack-800 rounded-md p-5'>
+        <div className=' bg-richblack-800 rounded-md p-5 w-full mt-10'>
             {step === 1 && <CourseInformationForm />}
             { step === 2 && <CourseBuilderForm />}
             { step === 3 && <PublishCourse />}
