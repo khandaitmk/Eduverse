@@ -4,7 +4,7 @@ import RenderSteps from './RenderSteps'
 function AddCourses() {
 
   return (
-    <div className=' text-white w-[85%] p-10 mx-auto'>
+    <div className='relative text-white w-[85%] p-10 mx-auto'>
         <div className='relative w-full flex gap-5'>
           <div className=' flex flex-col gap-10 w-[80%]'>
             <h1 className=' text-3xl font-semibold'>Add Course</h1>
