@@ -8,7 +8,11 @@ import ChipInputComponent from './ChipInputComponent';
 import Requirements from './Requirements';
 import Upload from './Upload';
 import { FaArrowRight } from "react-icons/fa";
-
+import { current } from '@reduxjs/toolkit';
+import { setCourse, setEditCourse,setStep } from '../../../../../slices/courseSlice';
+import toast from 'react-hot-toast';  
+import { addCourseDetails } from '../../../../../services/operations/courseDetailsAPI';
+import { editCourseDetails } from '../../../../../services/operations/courseDetailsAPI';
 
 function CourseInformationForm() {
   const {register,handleSubmit,setValue,getValues,formState:{errors}}=useForm();
@@ -16,6 +20,7 @@ function CourseInformationForm() {
   const {course,editCourse}=useSelector((state) => state.course);
   const [loading,setLoading]= useState(false);
   const [courseCategories,setCourseCategories]=useState([]);
+  const {token} = useSelector((state)=> state.auth);
 
   useEffect(() =>{
     const getCategories = async() =>{
@@ -29,11 +34,104 @@ function CourseInformationForm() {
     getCategories();
     console.log("categories in course info form",courseCategories);
     setLoading(false);
+
+    // if edit course is true then we set the previous values to the form
+
+    if(editCourse && course){
+      setValue("courseTitle",course.courseName);
+      setValue("shortDesc",course.courseDescription);
+      setValue("coursePrice",course.price);
+      setValue("courseCategory",course.category);
+      setValue("courseTag",course.tags);
+      setValue("thumbnail",course.thumbnail);
+      setValue("courseBenefits",course.whatYouWillLearn);
+      setValue("requirement",course.requirements);
+    }
+
   },[]);
 
-  function submitHandler(data){
+  // now checking whether form is updated or not i.e the course values and the current values are differen like wise
+  const formUpdated =() =>{
+    const currentValues = getValues();
+    if(currentValues.courseTitle !== course.courseName ||
+      currentValues.shortDesc !== course.courseDescription ||
+      currentValues.coursePrice !== course.price ||
+      currentValues.courseCategory !== course.category ||
+      currentValues.courseTag.toString() !== course.tags.toString() ||
+      currentValues.courseBenefits !== course.whatYouWillLearn ||
+      currentValues.requirement.toString() !== course.requirements.toString()      
+    )
+      return true;
+    else
+      return false;
+  };
 
-    console.log("data in course info form",data);
+
+  async function submitHandler(data){
+    if(editCourse){
+      if(formUpdated()){
+        const currentValues = getValues();
+        const formData = new FormData();
+        formData.append("courseID",course._id);
+        if(currentValues.courseTitle !== course.courseName){
+          formData.append("courseName",currentValues.courseTitle);
+        }
+        if(currentValues.shortDesc !== course.courseDescription){
+          formData.append("courseDescription",currentValues.shortDesc);
+        }
+        if(currentValues.coursePrice !== course.price){
+          formData.append("price",currentValues.coursePrice);
+        }
+        if(currentValues.courseCategory !== course.category){
+          formData.append("category",currentValues.courseCategory);
+        }
+        if(currentValues.courseTag !== course.tags){
+          formData.append("tags",JSON.stringify(currentValues.courseTag));
+        }
+        if(currentValues.courseBenefits !== course.whatYouWillLearn){
+          formData.append("whatYouWillLearn",currentValues.courseBenefits);
+        }
+        if(currentValues.requirement !== course.requirements){
+          formData.append("requirements",JSON.stringify(currentValues.requirement));
+        }
+        if(currentValues.thumbnail !== course.thumbnail){
+          formData.append("thumbnail",currentValues.thumbnail);
+        }
+
+        const result = await editCourseDetails(formData);
+        if(result){
+          dispatch(setEditCourse(false));
+          dispatch(setStep(2));
+          dispatch(setCourse(result));
+        }
+        console.log("result :",result);
+
+      }
+      else{
+        toast.error("No changes made to the form");
+      }
+      return
+    }
+    else{
+      const formData = new FormData();
+      formData.append("courseName",data.courseTitle);
+      formData.append("courseDescription",data.shortDesc);
+      formData.append("price",data.coursePrice);
+      formData.append("category",data.courseCategory);
+      formData.append("tag",JSON.stringify(data.courseTag));
+      formData.append("thumbnail",data.thumbnail);
+      formData.append("whatYouWillLearn",data.courseBenefits);
+      formData.append("instructions",JSON.stringify(data.requirement));
+      console.log("data:",data)
+      console.log("thumbnail",data.thumbnail);
+      const result = await addCourseDetails(formData,token);
+      if(result){
+        dispatch(setCourse(result));
+        dispatch(setStep(2));
+      }
+      console.log("result",result);
+    }
+
   }
 
   
@@ -53,7 +151,7 @@ function CourseInformationForm() {
         </div>
 
         <div className=' text-white flex flex-col w-full  gap-3'>
-          <label htmlFor="courseTitle" className='text-sm'>Coures Short Description <sup className='text-red-500'>*</sup></label>
+          <label htmlFor="shortDesc" className='text-sm'>Coures Short Description <sup className='text-red-500'>*</sup></label>
           <textarea name="shortDesc" id="shortDesc" cols="5" rows="5" placeholder='Enter Description' {...register("shortDesc" ,{required:true})} 
           className='bg-richblack-700 p-2 py-4 rounded-md border-b-1 border-richblack-300'></textarea>
            {
@@ -75,7 +173,7 @@ function CourseInformationForm() {
 
         <div className=' text-white flex flex-col w-full gap-3 '>
           <label htmlFor="courseCategory" className='text-sm'>Coures Category <sup className='text-red-500'>*</sup></label>
-          <select name="category" id="category" className='bg-richblack-700 p-2 py-4 rounded-md border-b-1 border-richblack-300' {...register("courseCategories",{required:true})}>
+          <select name="courseCategory" id="courseCategory" className='bg-richblack-700 p-2 py-4 rounded-md border-b-1 border-richblack-300' {...register("courseCategory",{required:true})}>
             {
               errors.courseCategories && ("Course Category is required")
             }

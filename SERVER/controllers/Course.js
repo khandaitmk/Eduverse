@@ -1,15 +1,16 @@
 const Course=require('../models/Course');
-const Tag=require('../models/Category'); 
+const Category=require('../models/Category'); 
 const User=require('../models/User');
 const {uploadFile}=require('../util/imageUploader');
 
 exports.createCourse= async (req,res) =>{
     try{
         // fetch data
-        const {courseName,courseDescription,whatYouWillLearn,price,tag} =req.body;
-
+        console.log("body contents :",req.body);
+        const {courseName,courseDescription,price,category,tag,whatYouWillLearn,instructions} =req.body;
+        // console.log("courseName",courseName);
         // validation for the dataaa
-        const thumbnail=req.files.thumbnailImage;
+        const thumbnail=req.files.thumbnail;
         if(!courseName || !courseDescription || !whatYouWillLearn || !price || !tag || !thumbnail){
             return res.status(400).json({
                 success:false,
@@ -34,11 +35,11 @@ exports.createCourse= async (req,res) =>{
             });
         }
         // check for the tag
-        const tagDetails =await Tag.findById({tag});
+        const tagDetails =await Category.findOne({name:category});
         if(!tagDetails){
             return res.status(400).json({
                 success:false,
-                message:"tag is invalid"
+                message:"category is invalid"
             });
         }
 
@@ -60,16 +61,16 @@ exports.createCourse= async (req,res) =>{
             price,
             tag:tagDetails._id,
             thumbnailImage:thumbnailImage.secure_url,
-
+            instructions
         });
 
         // update the course for the instructor
         await User.findByIdAndUpdate({_id:userID},{$push:{courses:newCourse._id}},{new:true});
         // update the tag
 
-        await Tag.findByIdAndUpdate({_id:tagDetails._id},{$push:{course:newCourse._id}},{new:true});
+        await Category.findByIdAndUpdate({_id:tagDetails._id},{$push:{course:newCourse._id}},{new:true});
 
-        return res.status.json({
+        return res.status(200).json({
             success:true,
             message:"course created successfully",
             newCourse
@@ -78,7 +79,7 @@ exports.createCourse= async (req,res) =>{
     } catch(error){
         return res.status(400).json({
             success:false,
-            message:"Failed to create the course"
+            message:error.message
         });
     }
 };

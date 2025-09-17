@@ -1,5 +1,5 @@
 const cloudinary=require("cloudinary").v2;
-exports.uploadfile = async (file,folder,q) =>{
+exports.uploadFile = async (file,folder,q) =>{
         try{
             const option={
                 folder:folder,

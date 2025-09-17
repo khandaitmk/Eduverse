@@ -1,5 +1,5 @@
     import React from 'react'
-    import { apiConnector } from '../apiconnector'
+    import { apiConnector } from '../apiConnector';
     import { profileEndpoints, settingsEndpoints } from '../apis'
 import { setUser } from '../../slices/profileSlice';
     import {toast} from "react-hot-toast";

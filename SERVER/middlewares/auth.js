@@ -62,12 +62,12 @@ exports.isStudent=async (req,res,next)=>{
 
 exports.isInstructor=async (req,res,next)=>{
     try{
-        const {accoutType,email,id}=req.user;
-        
-        if(accoutType !== "Instructor"){
-            return res.status.json({
+        const {accountType,email,id}=req.user;
+        console.log("account Type=",accountType);
+        if(accountType !== "Instructor"){
+            return res.status(400).json({
                 success:false,
-                message:"this is protected rout for Instructor only"
+                message:"this is protected route for Instructor only"
             });
         };
         next();
@@ -76,7 +76,7 @@ exports.isInstructor=async (req,res,next)=>{
         console.log("error :",error);
         return res.status(400).json({
             success:false,
-            message:"failed to verify the secured route"
+            message:error.message
         });
     };
 };
