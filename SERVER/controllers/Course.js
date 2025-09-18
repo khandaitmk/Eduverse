@@ -61,7 +61,8 @@ exports.createCourse= async (req,res) =>{
             price,
             tag:tagDetails._id,
             thumbnailImage:thumbnailImage.secure_url,
-            instructions
+            instructions,
+            status:"Draft"
         });
 
         // update the course for the instructor

@@ -13,14 +13,16 @@ exports.createSection=async (req,res) =>{
             });
         }
         // create section
-        const sectionDetails=await Section.create({sectionName});
+        const sectionDetails=await Section.create({sectionName:sectionName});
         // update course with section id
         const courseDetails=await Course.findOneAndUpdate({_id:courseId},{$push:{courseContent:sectionDetails._id}},{new:true});
 
-        const populatedCourse=await Course.findById(courseDetails._id).populate("courseDetails").exec();
+        const populatedCourse=await Course.findById(courseDetails._id).populate("courseContent").exec();
         // return response
         return res.status(200).json({
-            success:false,
+            success:true,
+            data:populatedCourse,
+            id:sectionDetails._id,
             message:"Section created successfully"
         });
 

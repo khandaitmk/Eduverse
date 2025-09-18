@@ -37,10 +37,10 @@ function RenderSteps() {
                                     item.id > 1 ? <div className=' h-1 border-t-2 border-dashed border-richblack-800 w-full'></div> :
                                     <div className='w-full'></div>
                                 }
-                                <div className={`bg-richblack-800 rounded-full w-20 h-10 flex items-center text-richblack-200
-                                     justify-center p-1 border-2 ${ step === item.id ?" border-yellow-50 bg-yellow-900":""}`}>
+                                <div className={`bg-richblack-800 rounded-full w-20 h-10 flex items-center text-richblack-500
+                                     justify-center p-1 border-2 ${ step >= item.id ?" border-yellow-50 bg-yellow-900":""}`}>
                                     {
-                                        (step>item.id)?<FaCheck></FaCheck>:<p className='text-lg'>{item.id}</p>
+                                        (step>item.id)?<FaCheck color='yellow-50'></FaCheck>:<p className='text-lg'>{item.id}</p>
                                     }
                                 </div>
                                 {
