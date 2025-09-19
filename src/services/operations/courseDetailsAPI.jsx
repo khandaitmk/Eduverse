@@ -1,7 +1,7 @@
 import { courseEndpoints } from "../apis";
 import {apiConnector} from "../apiConnector";
 import { setCourse } from "../../slices/courseSlice";
-const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API}=courseEndpoints;
+const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API}=courseEndpoints;
 export const fetchCourseCategories = async() =>{
     let result=[];
     try{
@@ -55,7 +55,7 @@ export const createSection= async (data,token,dispatch) =>{
         if(!response.data.success){
             throw new Error("Error in creation of Section");
         }
-        console.log("Response after creation of section",response.data.data);
+        // console.log("Response after creation of section",response.data.data);
         dispatch(setCourse(response.data.data));
         return (response.id);
     } catch(error){
@@ -63,6 +63,31 @@ export const createSection= async (data,token,dispatch) =>{
     }
 }
 
-export const updateSection = async() =>{
+export const editSection = async(data,token,dispatch) =>{
+    try{
+        const response = await apiConnector("POST",UPDATE_SECTION_API,data,{
+            Authorization:`Bearer ${token}`
+        });
+        if(!response.data.success){
+            throw new Error("Error occured in updation of the section ")
+        }
+        // console.log("edited section :",response.data.updatedCourse);
+        dispatch(setCourse(response.data.updatedCourse));
+    } catch(error){
 
+    }
+};
+export const deletSection = async(data,token,dispatch) =>{
+    try{
+        const response =await apiConnector("POST",DELETE_SECTION_API,data,{
+            Authorization:`Bearer ${token}`
+        });
+        if(!response.data.success){
+            throw new Error ("Error in deletion of the section");
+        }
+        console.log("response after the deletion :",response.data.updatedCourse);
+        dispatch(setCourse(response.data.updatedCourse));
+    } catch (error){
+        console.log("Error in the delete section ",error);
+    }
 };

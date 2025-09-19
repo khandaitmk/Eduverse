@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import NestedView from './NestedView';
 import { createSection } from '../../../../../services/operations/courseDetailsAPI';
+import { editSection } from '../../../../../services/operations/courseDetailsAPI';
 
 function CourseBuilderForm() {
   const {register, handleSubmit ,setValue,getValues , formState :{errors}} =useForm();
@@ -28,14 +29,20 @@ function CourseBuilderForm() {
     }
   };
 
-   async function submitHandler(data){
+   async function submitHandler(){
+    const data=getValues();
+    console.log("cata :",data);
     let result=null;
+    console.log("====",sectionId)
     if(editSectionName){
-      result = await updateSection({
+      result = await editSection({
         sectionName:data.sectionName,
         sectionId:sectionId
-      },token);
+      },token,dispatch);
 
+      setEditSectionName(false);
+      setValue("sectionName","")
+      // setSectionId(null);
     }
     else{
       // console.log("section Name :",data.sectionName)
@@ -44,6 +51,8 @@ function CourseBuilderForm() {
         courseId:course._id
       },token,dispatch);
       setSectionId(result);
+      setValue("sectionName","")
+
     }
   };
 
@@ -54,7 +63,7 @@ function CourseBuilderForm() {
   return (
     <div className='flex flex-col gap-5'>
       <h1 className='text-white font-semibold text-2xl'>Course Builder</h1>
-      <form className='flex flex-col gap-5' action="" onSubmit={handleSubmit(submitHandler)}>
+      <form className='flex flex-col gap-5' action="" >
         <div className='text-white flex flex-col gap-3'>
           <label className='text-sm' htmlFor="sectionName">Section Name <sup className='text-red-500'>*</sup></label>
           <input className='bg-richblack-700 p-2 py-3 rounded-md border-b-1 border-richblack-300' type="text" name="sectionName" id="sectionName" placeholder='Add a section to build your course' {...register("sectionName",{required:true})}/>
@@ -63,7 +72,7 @@ function CourseBuilderForm() {
           }
         </div>
         <div>
-          <button type='submit' className='flex items-center gap-3 text-yellow-50 font-semibold border-[1px] p-2 rounded-md cursor-pointer'>
+          <button type='button' onClick={()=>submitHandler()} className='flex items-center gap-3 text-yellow-50 font-semibold border-[1px] p-2 rounded-md cursor-pointer'>
             <span>
               {
                 editSectionName ?"Edit Section Name" :"Create Section"
@@ -75,7 +84,7 @@ function CourseBuilderForm() {
         {/* for showing the sections */}
 
         <div>
-          {(course.courseContent.length > 0) && <NestedView></NestedView>}
+          {(course.courseContent.length > 0) && <NestedView setEditSectionName={setEditSectionName} setSectionId={setSectionId} setValue={setValue}></NestedView>}
         </div>
 
         

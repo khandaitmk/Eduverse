@@ -128,6 +128,7 @@ function CourseInformationForm() {
       if(result){
         dispatch(setCourse(result));
         dispatch(setStep(2));
+        // console.log("courseId :",course);
       }
       console.log("result",result);
     }

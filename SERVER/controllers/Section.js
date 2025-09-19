@@ -6,6 +6,7 @@ exports.createSection=async (req,res) =>{
         // fetch data
         const {sectionName,courseId}=req.body;
         // validate data
+        console.log("sectionname :",courseId);
         if(!sectionName || !courseId){
             return res.status(400).json({
                 success:false,
@@ -55,10 +56,12 @@ exports.updateSection=async (req,res) => {
         }
         // update the section
         const updatedSection=await Section.findByIdAndUpdate(sectionId,{sectionName:sectionName},{new:true});
+        const updatedCourse = await Course.findOne({courseContent:sectionId}).populate("courseContent").exec();
         // return respons
         return res.status(200).json({
             success:true,
-            message:"section updated successfully"
+            message:"section updated successfully",
+            updatedCourse
         });
 
     } catch(error){
@@ -72,26 +75,31 @@ exports.updateSection=async (req,res) => {
 exports.deleteSection=async (req,res) =>{
     try{
         // get id Assuming that we are sending the id in params
-        const {sectionId}=req.params;
+        const {sectionId}=req.body;
         if(!sectionId){
             return res.status(400).json({
                 success:false,
                 message:"please fill all the details that is section id"
             });
         }
+          const course = await Course.findOne({courseContent:sectionId});
+
         // use findById and delete and delete
         const deletedSection= await Section.findByIdAndDelete(sectionId);
         // does we need to delete the section id from the course
-        await Course.updateMany({courseContent:sectionId},{$pull:{courseContent:sectionId}});
+       await Course.updateMany({_id:course._id},{$pull:{courseContent:sectionId}});
+       const updatedCourse = await Course.findById(course._id).populate("courseContent").exec();
         // return response
         return res.status(200).json({
             success:true,
-            message:"the section  deleted successfully"
+            message:"the section  deleted successfully",
+            updatedCourse
+
         })
     } catch(error){
         return res.status(400).json({
             success:false,
-            message:"Failed to delete the section "
+            message:error.message
         });
     }
 }
