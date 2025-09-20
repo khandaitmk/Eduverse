@@ -18,7 +18,7 @@ function SubSectionalModal(props) {
         setModalData(null);
     }
   return (
-    <div className='fixed inset-0 flex items-center justify-center h-screen w-screen overflow-auto backdrop-blur-sm'>
+    <div className='fixed inset-0 flex items-center justify-center h-screen w-screen overflow-auto backdrop-blur-sm z-100'>
         <div className='w-11/12 max-w-[700px] mt-0 overflow-auto rounded-lg border-1 border-richblack-400 bg-richblack-800'>
             <div className='bg-richblack-700 text-white flex justify-between p-4 rounded-lg'>
                     <p className=' text-lg  font-bold'>{edit && "Editing"} {add && "Adding"} {view && "Viewing"} Lecture</p>

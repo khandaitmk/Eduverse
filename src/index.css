@@ -119,3 +119,13 @@
   --max-w-maxContent: 1260px;
   --max-w-maxContentTab: 650px;
 }
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome/Safari/Opera */
+  }
+}

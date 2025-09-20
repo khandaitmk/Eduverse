@@ -16,8 +16,8 @@ function Dashboard() {
         )
     }
   return (
-    <div className=' flex bg-richblack-800'>
-        <SideBar className="overflow-hidden "></SideBar>
+    <div className=' flex bg-richblack-800 sticky top-0 h-[calc(100vh-3.5rem)]'>
+        <SideBar className=""></SideBar>
         <div className=' flex-1 overflow-auto bg-richblack-900'>
             <div className=''>
                 <Outlet></Outlet>

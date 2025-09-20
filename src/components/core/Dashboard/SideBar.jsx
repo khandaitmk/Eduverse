@@ -25,8 +25,8 @@ function SideBar() {
     const [confirmationModel,setConfirmationModel]=useState(null);
 
   return (
-    <div className={`h-[calc(100vh-3.5rem)] bg-richblack-800 w-[15%] text-white overflow-hidden sticky top-0`}>
-        <div>
+    <div className={` h-[calc(100vh-3.5rem)] bg-richblack-800 w-[14%] text-richblack-300 overflow-hidden sticky top-0 flex flex-col gap-5`}>
+        <div className='flex flex-col pt-10 gap-3'>
             {
                 sidebarLinks.map((link) =>{
                     if(link.type && user?.accountType !== link.type )return null;
@@ -37,7 +37,7 @@ function SideBar() {
             }
         </div>
 
-        <div className='mt-5 w-[85%] mx-auto bg-richblack-500 h-[1px]'></div>
+        <div className=' w-[85%] mx-auto bg-richblack-500 h-[1px]'></div>
 
         <div>
             <SideBarLinks link={{name:"Settings",path:"/dashboard/settings"} } icon={"VscSettingsGear"}></SideBarLinks>
@@ -51,7 +51,7 @@ function SideBar() {
                     btn2Handler:()=>setConfirmationModel(null)
                 })}
             >
-                <div className=' flex items-center p-4 gap-x-2'>
+                <div className=' flex items-center p-4 pl-8 gap-x-2'>
                     <VscSignOut className ="text-lg"></VscSignOut>
                     <span>Logout</span>
                 </div>

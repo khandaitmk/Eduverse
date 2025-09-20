@@ -13,7 +13,7 @@ function SideBarLinks(props) {
     }
   return (
     <Link to={props.link.path} >
-        <div className={`relative text-sm py-4 px-4 font-medium transition-all duration-300 ${matchRoute(props.link.path)?"bg-yellow-700 text-yellow-50":""} `}>
+        <div className={`relative text-sm p-1 pl-8 font-medium transition-all duration-300 ${matchRoute(props.link.path)?"bg-yellow-700 text-yellow-50":""} `}>
             <div className=' flex items-center gap-x-2'>
                 <Icon className="text-3x md:text-lg"></Icon>
                 <span className=''>{props.link.name}</span>

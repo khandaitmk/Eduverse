@@ -10,7 +10,7 @@ function AddCourses() {
             <h1 className=' text-3xl font-semibold'>Add Course</h1>
             <RenderSteps></RenderSteps>
           </div>
-          <div className='bg-richblack-800 max-w-[450px] p-4 rounded-md text-sm flex flex-col gap-5 text-richblack-50 h-fit'>
+          <div className='bg-richblack-800 max-w-[450px] p-4 rounded-md text-sm flex flex-col gap-5 text-richblack-50 h-fit sticky top-10'>
             <p className=' text-lg text-start '>⚡Course Upload Tips</p>
             <ul className='list-disc flex flex-col gap-2 pl-5'>
               <li>Set the Course Price option or make it free.</li>

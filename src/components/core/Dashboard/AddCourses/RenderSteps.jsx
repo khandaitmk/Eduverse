@@ -23,7 +23,7 @@ function RenderSteps() {
         }
     ]
   return (
-    <div className=' w-full flex flex-col justify-center items-center gap-3 text-richblack-500'>
+    <div className=' w-full flex flex-col justify-center items-center gap-3 text-richblack-500 overflow-auto scrollbar-hide'>
         {/* steps numbers with title */}
         {/* 9557 */}
 
@@ -31,7 +31,7 @@ function RenderSteps() {
             {
                 steps.map((item) => {
                     return (
-                        <div key={item.id} className=' flex flex-col justify-center items-center gap-3 w-full'>
+                        <div key={item.id} className=' flex flex-col justify-center items-center gap-3 w-full '>
                             <div className='flex w-full items-center'>
                                 {
                                     item.id > 1 ? <div className=' h-1 border-t-2 border-dashed border-richblack-800 w-full'></div> :
