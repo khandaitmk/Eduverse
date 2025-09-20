@@ -17,6 +17,8 @@ import { editCourseDetails } from '../../../../../services/operations/courseDeta
 function CourseInformationForm() {
   const {register,handleSubmit,setValue,getValues,formState:{errors}}=useForm();
   const dispatch=useDispatch();
+  const [preview,setPreview]=useState(null);
+
   const {course,editCourse}=useSelector((state) => state.course);
   const [loading,setLoading]= useState(false);
   const [courseCategories,setCourseCategories]=useState([]);
@@ -38,12 +40,15 @@ function CourseInformationForm() {
     // if edit course is true then we set the previous values to the form
 
     if(editCourse && course){
+      
+      console.log("course atg :",course.tag);
       setValue("courseTitle",course.courseName);
       setValue("shortDesc",course.courseDescription);
       setValue("coursePrice",course.price);
       setValue("courseCategory",course.category);
-      setValue("courseTag",course.tags);
+      setValue("courseTag",course.tag);
       setValue("thumbnail",course.thumbnail);
+      setPreview(course.thumbnail);
       setValue("courseBenefits",course.whatYouWillLearn);
       setValue("requirement",course.requirements);
     }
@@ -53,6 +58,7 @@ function CourseInformationForm() {
   // now checking whether form is updated or not i.e the course values and the current values are differen like wise
   const formUpdated =() =>{
     const currentValues = getValues();
+          
     if(currentValues.courseTitle !== course.courseName ||
       currentValues.shortDesc !== course.courseDescription ||
       currentValues.coursePrice !== course.price ||
@@ -71,6 +77,8 @@ function CourseInformationForm() {
     if(editCourse){
       if(formUpdated()){
         const currentValues = getValues();
+          console.log("current course :",course);
+          console.log("current values :",currentValues);
         const formData = new FormData();
         formData.append("courseID",course._id);
         if(currentValues.courseTitle !== course.courseName){
@@ -83,7 +91,7 @@ function CourseInformationForm() {
           formData.append("price",currentValues.coursePrice);
         }
         if(currentValues.courseCategory !== course.category){
-          formData.append("category",currentValues.courseCategory);
+          formData.append("category",currentValues.courseCategory._id);
         }
         if(currentValues.courseTag !== course.tags){
           formData.append("tags",JSON.stringify(currentValues.courseTag));
@@ -98,7 +106,7 @@ function CourseInformationForm() {
           formData.append("thumbnail",currentValues.thumbnail);
         }
 
-        const result = await editCourseDetails(formData);
+        const result = await editCourseDetails(formData,token);
         if(result){
           dispatch(setEditCourse(false));
           dispatch(setStep(2));
@@ -195,7 +203,7 @@ function CourseInformationForm() {
         <ChipInputComponent name={"courseTag"} register={register} errors={errors} setValue={setValue} getValues={getValues} label={"Tags"} placeholder={"Enter Tag and Press Enter"} />
         
         {/* course Thumbnail */}
-            <Upload name={"thumbnail"} register={register} setValue={setValue} getValues={getValues} label={"Course Thumbnail"}></Upload>
+            <Upload name={"thumbnail"} register={register} setValue={setValue} getValues={getValues} label={"Course Thumbnail"} preview={preview} setPreview={setPreview}></Upload>
         {/* Benifits of course */}
         <div className=' text-white flex flex-col w-full  gap-3'>
           <label htmlFor="courseBenefits" className='text-sm'>Benifits of the course <sup className='text-red-500'>*</sup></label>

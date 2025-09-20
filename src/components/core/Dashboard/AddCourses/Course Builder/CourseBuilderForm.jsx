@@ -29,11 +29,15 @@ function CourseBuilderForm() {
     }
   };
 
+  // const goBack = () => {
+
+  // };
+
    async function submitHandler(){
     const data=getValues();
-    console.log("cata :",data);
+    // console.log("cata :",data);
     let result=null;
-    console.log("====",sectionId)
+    // console.log("====",sectionId)
     if(editSectionName){
       result = await editSection({
         sectionName:data.sectionName,
@@ -82,13 +86,13 @@ function CourseBuilderForm() {
           </button>
         </div>
         {/* for showing the sections */}
-
+              </form>
         <div>
           {(course.courseContent.length > 0) && <NestedView setEditSectionName={setEditSectionName} setSectionId={setSectionId} setValue={setValue}></NestedView>}
         </div>
 
         
-      </form>
+      
       {/* back and next buttons */}
       <div className='flex gap-3 justify-end'>
         <button className='text-richblack-900 bg-richblack-400 p-2 px-4 rounded-md font-semibold cursor-pointer' onClick={()=>{

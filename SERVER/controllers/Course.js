@@ -59,8 +59,8 @@ exports.createCourse= async (req,res) =>{
             instructor:instructorDetails._id,
             whatYouWillLearn,
             price,
-            tag:tagDetails._id,
-            thumbnailImage:thumbnailImage.secure_url,
+            category:tagDetails._id,
+            thumbnail:thumbnailImage.secure_url,
             instructions,
             status:"Draft"
         });
@@ -70,11 +70,11 @@ exports.createCourse= async (req,res) =>{
         // update the tag
 
         await Category.findByIdAndUpdate({_id:tagDetails._id},{$push:{course:newCourse._id}},{new:true});
-
+        const updatedCourse = await Course.findById(newCourse._id).populate([{path:"instructor"},{path:"category"}]).exec();
         return res.status(200).json({
             success:true,
             message:"course created successfully",
-            newCourse
+            updatedCourse
         });
 
     } catch(error){
@@ -84,6 +84,77 @@ exports.createCourse= async (req,res) =>{
         });
     }
 };
+exports.editCourse = async(req,res)=>{
+    try{
+        // fetch data
+         const {courseID} =req.body;
+         const course= await Course.findById(courseID);
+    	 const updates = req.body
+        
+         
+         if(!course){
+            return res.status(404).json({
+                success:false,
+                message:"course not found"
+            });
+         }
+
+         for (const key of Object.keys(updates)) { //Object.keys() is method that return the array of keys in the object like {a:1,b:2} => ["a","b"]
+        if (key === "tags" || key === "instructions") {
+            // Parse JSON fields
+            course[key] = JSON.parse(updates[key]);
+        } else {
+            course[key] = updates[key];
+        }
+        }
+
+      await course.save()
+
+         if(req.files){
+            const thumbnail=req.files.thumbnail;
+            const thumbnailImage = await uploadFile(thumbnail,"courseThumbnails");
+            if(!thumbnailImage){
+                return res.status(400).json({
+                    success:false,
+                    message:"Failed to upload thumbnail image"
+                });
+            }
+
+         }
+
+         const updatedCourse = await Course.findOne({
+		_id: courseID,
+	  })
+		.populate({
+		  path: "instructor",
+		  populate: {
+			path: "additionalDetails",
+		  },
+		})
+		.populate("category")
+		.populate({
+		  path: "courseContent",
+		  populate: {
+			path: "subSection",
+		  },
+		})
+		.exec()
+  
+	  res.json({
+		success: true,
+		message: "Course updated successfully",
+		data: updatedCourse,
+	  })
+
+    } catch(error){
+        res.status(500).json({
+            success:false,
+            message:"failed to edit the course details",
+            error:error.message
+        });
+    }
+};
+
 exports.getAllCourses= async (req,res) =>{
     try{
         // get all courses for the Courses model in the course array

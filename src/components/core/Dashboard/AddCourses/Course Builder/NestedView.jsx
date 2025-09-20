@@ -64,9 +64,33 @@ function NestedView(props) {
                             </div>
                             <div className=' bg-richblack-300 w-full h-[0.5px]'></div>
                         </div>
-                        <div>
+                        <div className=' flex flex-col gap-3'>
                             {
-                                console.log("subsection",section.subSection)
+                                section.subSection.map((sub)=>{
+                                    return(
+                                        <div key={sub._id} className='w-11/12 mx-auto'>
+                                            <div>
+                                                <div  className=' flex justify-between text-richblack-300'>
+                                                <div className=' flex items-center gap-3'>
+                                                <button type='button' className=' cursor-pointer'><RxDropdownMenu size={30}></RxDropdownMenu></button>
+                                                <p className=' font-bold text-lg'>{sub.title}</p>
+                                                </div>     
+                                                <div className=' flex items-center gap-2'>
+                                                <button type='button' className=' cursor-pointer'>
+                                                    <MdEdit size={25}></MdEdit>
+                                                </button>
+
+                                                <button  type='button' className=' cursor-pointer'>
+                                                    <MdDeleteOutline size={25}></MdDeleteOutline>
+                                                </button>
+                                                
+                                                </div>                    
+                                                </div>
+                                                <div className=' bg-richblack-300 w-full h-[0.5px]'></div>
+                                            </div>
+                                        </div>
+                                    );
+                                })
                             }
                         </div>
                         <div>

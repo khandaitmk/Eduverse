@@ -2,13 +2,20 @@ import React from 'react'
 import { RxCross2 } from "react-icons/rx";
 import Upload from './Upload';
 import { useForm } from 'react-hook-form';
+import { createSubSection } from '../../../../../services/operations/courseDetailsAPI';
+import { useDispatch, useSelector } from 'react-redux';
 
 function SubSectionalModal(props) {
     const {modalData,setModalData,add,edit,view}=props;
+    const {token} = useSelector((state)=>state.auth);
+    const dispatch=useDispatch();
 
     const {register,handleSubmit,getValues,setValue,formState:{errors}}=useForm();
-    function handleSub(data){
+    async function handleSub(data){
         console.log("lect data :",data);
+        const result = await createSubSection({title:data.lecTitle,timeDuration:2.30,description:lecDesc,sectionId:modalData,videoFile:data.lecVideo},token,dispatch);
+
+        setModalData(null);
     }
   return (
     <div className='fixed inset-0 flex items-center justify-center h-screen w-screen overflow-auto backdrop-blur-sm'>

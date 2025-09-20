@@ -5,8 +5,7 @@ import { MdDeleteOutline } from "react-icons/md";
 
 
 function Upload(props) {
-    const {name,register,setValue,getValues,label}=props;
-    const [preview,setPreview]=useState(null);
+    const {name,register,setValue,getValues,label,preview,setPreview}=props;
     const [isDragging,setIsDragging]=useState(false);
     useEffect(()=>{
         register(name,{required:true});

@@ -1,6 +1,7 @@
 const Section =require("../models/Section");
 const SubSection=require("../models/SubSection");
-const uploadFile =require("../util/imageUploader");
+const {uploadFile} = require("../util/imageUploader");
+const Course=require("../models/Course");
 require("dotenv").config();
 exports.createSubSection=async (req,res) =>{
     try{
@@ -10,30 +11,34 @@ exports.createSubSection=async (req,res) =>{
         // extract video
         const videoFile=req.files.videoFile;
         // validate data
-        if(!title || !timeDuration || !description || !sectionId || !vidoeFile){
+        if(!title || !timeDuration || !description || !sectionId || !videoFile){
             return res.status(400).json({
                 success:false,
                 message:"fill all the fields"
             });
         }
         // upload video to cloudinary the store the secure url
-        const uploadDetails=await uploadFile(vidoe,process.env.FOLDER_NAME);
+        const uploadDetails=await uploadFile(videoFile,process.env.FOLDER_NAME);
         // create sub section
         const subSectionDetails=await SubSection.create({title:title,timeDuration:timeDuration,description:description,videoUrl:uploadDetails.secure_url});
         // update section with subsection id
         const updateSectionDetail=await Section.findByIdAndUpdate(sectionId,{$push:{subSection:subSectionDetails._id}},{new:true});
 // populated sub section in the section so the sub sectio details will be shown not the section id 
         populatedSubSection=await Section.findById(updateSectionDetail._id).populate("subSection").exec();
+        const updatedCourse = await Course.findOne({courseContent:sectionId}).populate({path:"courseContent",
+            populate:{path:"subSection",model:"SubSection"}}
+        ).exec();
         // return response
         return res.status(200).json({
             success:true,
-            message:"subsection created and added to the section successfully"
+            message:"subsection created and added to the section successfully",
+            updatedCourse
         })
 
     } catch(error){
         return res.status(400).json({
             success:false,
-            message:"faild to create the sub-section"
+            message:error.message
         });
     }
 };
@@ -42,7 +47,7 @@ exports.updateSubSection=async (req,res) =>{
     try{
         // fetch the data
         const {title,timeDuration,description,subSectionId}=req.body;
-        const video=req.files.videoFile;
+        const videoFile=req.files.videoFile;
 
         // validate the data
         if(!title || !timeDuration ||!description || !subSectionId){
@@ -101,4 +106,4 @@ exports.deleteSubSection=async (req,res) =>{
             message:"Failed to delete the sub-section "
         });
     }
-}
+};

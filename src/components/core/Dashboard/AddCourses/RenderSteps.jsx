@@ -38,7 +38,8 @@ function RenderSteps() {
                                     <div className='w-full'></div>
                                 }
                                 <div className={`bg-richblack-800 rounded-full w-20 h-10 flex items-center text-richblack-500
-                                     justify-center p-1 border-2 ${ step >= item.id ?" border-yellow-50 bg-yellow-900":""}`}>
+                                     justify-center p-1 border-2 ${ step > item.id ?" border-yellow-50 bg-yellow-50":""}
+                                     ${ step == item.id ?" text-yellow-50 border-yellow-50 bg-yellow-900":""} `}>
                                     {
                                         (step>item.id)?<FaCheck color='yellow-50'></FaCheck>:<p className='text-lg'>{item.id}</p>
                                     }
