@@ -39,14 +39,14 @@ function CourseInformationForm() {
 
     // if edit course is true then we set the previous values to the form
 
-    if(editCourse && course){
+    if(editCourse){
       
-      console.log("course atg :",course.tag);
+      console.log("course tags :",course.tags);
       setValue("courseTitle",course.courseName);
       setValue("shortDesc",course.courseDescription);
       setValue("coursePrice",course.price);
       setValue("courseCategory",course.category);
-      setValue("courseTag",course.tag);
+      setValue("courseTag",course.tags);
       setValue("thumbnail",course.thumbnail);
       setPreview(course.thumbnail);
       setValue("courseBenefits",course.whatYouWillLearn);
@@ -62,10 +62,10 @@ function CourseInformationForm() {
     if(currentValues.courseTitle !== course.courseName ||
       currentValues.shortDesc !== course.courseDescription ||
       currentValues.coursePrice !== course.price ||
-      currentValues.courseCategory !== course.category ||
-      currentValues.courseTag.toString() !== course.tags.toString() ||
+      (currentValues.courseCategory?._id || currentValues.courseCategory) !== (course.category?._id || course.category) ||
+      JSON.stringify(currentValues.courseTag) !== JSON.stringify(course.tags) ||
       currentValues.courseBenefits !== course.whatYouWillLearn ||
-      currentValues.requirement.toString() !== course.requirements.toString()      
+      JSON.stringify(currentValues.requirement) !== JSON.stringify(course.requirements)      
     )
       return true;
     else
@@ -90,23 +90,23 @@ function CourseInformationForm() {
         if(currentValues.coursePrice !== course.price){
           formData.append("price",currentValues.coursePrice);
         }
-        if(currentValues.courseCategory !== course.category){
-          formData.append("category",currentValues.courseCategory._id);
+        if((currentValues.courseCategory?._id || currentValues.courseCategory) !== (course.category?._id || course.category)){
+          formData.append("category",currentValues.courseCategory._id || currentValues.courseCategory);
         }
-        if(currentValues.courseTag !== course.tags){
+        if(JSON.stringify(currentValues.courseTag) !== JSON.stringify(course.tags)){
           formData.append("tags",JSON.stringify(currentValues.courseTag));
         }
         if(currentValues.courseBenefits !== course.whatYouWillLearn){
           formData.append("whatYouWillLearn",currentValues.courseBenefits);
         }
-        if(currentValues.requirement !== course.requirements){
+        if(JSON.stringify(currentValues.requirement) !== JSON.stringify(course.requirements)){
           formData.append("requirements",JSON.stringify(currentValues.requirement));
         }
         if(currentValues.thumbnail !== course.thumbnail){
           formData.append("thumbnail",currentValues.thumbnail);
         }
 
-        const result = await editCourseDetails(formData,token);
+        const result = await editCourseDetails(formData,token,dispatch);
         if(result){
           dispatch(setEditCourse(false));
           dispatch(setStep(2));

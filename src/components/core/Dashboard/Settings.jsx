@@ -140,7 +140,7 @@ function Settings() {
             {/* change password section */}
             <div className='text-white bg-richblack-800 rounded-md p-8 text-sm flex flex-col gap-5'>
                 <h1 className='text-lg font-semibold'>Password</h1>
-                <div className=' flex gap-5'>
+                <div className=' flex gap-5 z-[1]'>
                     <label className='w-[50%] relative' htmlFor="newPassword"> <p>Current Password</p>
                         <input className='w-full bg-richblack-700 rounded-md p-2 py-3 text-white border-b-2 border-richblack-600' type={showPassword1?"text":"password"} name="currentPassword" id="currentPassword" placeholder=' Enter Current Password' 
                         value={passData.currentPassword} onChange={changePassHandler} />

@@ -100,7 +100,7 @@ exports.editCourse = async(req,res)=>{
          }
 
          for (const key of Object.keys(updates)) { //Object.keys() is method that return the array of keys in the object like {a:1,b:2} => ["a","b"]
-        if (key === "tags" || key === "instructions") {
+        if (key === "tags" || key === "requirements") {
             // Parse JSON fields
             course[key] = JSON.parse(updates[key]);
         } else {
@@ -111,6 +111,7 @@ exports.editCourse = async(req,res)=>{
       await course.save()
 
          if(req.files){
+            console.log("Thumbnail file received:", req.files.thumbnail);
             const thumbnail=req.files.thumbnail;
             const thumbnailImage = await uploadFile(thumbnail,"courseThumbnails");
             if(!thumbnailImage){
@@ -119,7 +120,11 @@ exports.editCourse = async(req,res)=>{
                     message:"Failed to upload thumbnail image"
                 });
             }
-
+            // Update the course with the new thumbnail URL
+            console.log("New thumbnail URL:", thumbnailImage.secure_url);
+            course.thumbnail = thumbnailImage.secure_url;
+            await course.save();
+            console.log("Course thumbnail updated successfully");
          }
 
          const updatedCourse = await Course.findOne({
@@ -225,4 +230,38 @@ exports.getCourseDetails= async (req,res) =>{
             message:"failed to fetch all the course details"
         });
     }
+};
+
+exports.getAllInstructorCourses = async (req,res) =>{
+  try{
+    // fetch userid
+    const userID=req.user.id;
+    
+    const instructorDetail= User.findById(userID);
+    if(!instructorDetail){
+        return res.status(400).json({
+            success:false,
+            message:"instructor not founded"
+      });
+    }
+    // fetch all the courses for the instructor
+    const instructorCourses = await Course.find({instructor:userID}).populate({
+        path:"courseContent",
+        populate:{path:"subSection",
+            populate:{path:"timeDuration"}
+        }
+    }).exec();
+    
+    return res.status(200).json({
+        success:true,
+        message:"instructor courses fetched successfully",
+        data:instructorCourses
+    })
+  } catch(error){
+    return res.status(500).json({
+        success:false,
+        message:"error in the fetching the instructor courses",
+        error:error.message
+    });
+  } 
 }

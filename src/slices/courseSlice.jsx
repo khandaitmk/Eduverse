@@ -4,7 +4,8 @@ const initialState ={
     step:1,
     course:null,
     editCourse:false,
-    paymentLoading:false
+    paymentLoading:false,
+    instructorCourses:[]
 };
 
 const courseSlice =createSlice({
@@ -23,6 +24,16 @@ const courseSlice =createSlice({
         setPaymentLoading : (state,action) => {
             state.paymentLoading =action.payload
         },
+        setInstructorCourses: (state,action) => {
+            state.instructorCourses = action.payload
+        },
+        updateCourseInList: (state,action) => {
+            const updatedCourse = action.payload;
+            const index = state.instructorCourses.findIndex(course => course._id === updatedCourse._id);
+            if(index !== -1) {
+                state.instructorCourses[index] = updatedCourse;
+            }
+        },
         resetCourseState: (state) => {
             state.step=1;
             state.course=null;
@@ -32,5 +43,5 @@ const courseSlice =createSlice({
     }
 });
 
-export const {setStep,setCourse,setEditCourse,setPaymentLoading,resetCourseState0} = courseSlice.actions;
+export const {setStep,setCourse,setEditCourse,setPaymentLoading,setInstructorCourses,updateCourseInList,resetCourseState} = courseSlice.actions;
 export default courseSlice.reducer;
