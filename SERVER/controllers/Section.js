@@ -87,7 +87,7 @@ exports.deleteSection=async (req,res) =>{
         // use findById and delete and delete
         const deletedSection= await Section.findByIdAndDelete(sectionId);
         // does we need to delete the section id from the course
-       await Course.updateMany({_id:course._id},{$pull:{courseContent:sectionId}});
+       await Course.findByIdAndUpdate(course._id,{ $pull: { courseContent: sectionId } },{ new: true });
        const updatedCourse = await Course.findById(course._id).populate("courseContent").exec();
         // return response
         return res.status(200).json({

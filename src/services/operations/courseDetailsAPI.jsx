@@ -2,7 +2,7 @@ import { courseEndpoints } from "../apis";
 import {apiConnector} from "../apiConnector";
 import { setCourse, updateCourseInList } from "../../slices/courseSlice";
 import toast from "react-hot-toast";
-const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API}=courseEndpoints;
+const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API,DELETE_SUBSECTION_API}=courseEndpoints;
 export const fetchCourseCategories = async() =>{
     let result=[];
     try{
@@ -19,7 +19,7 @@ export const fetchCourseCategories = async() =>{
     }
 };
 
-export const editCourseDetails = async (data, token,dispatch) => {
+export const editCourseDetails = async (data,token,dispatch) => {
     const toastId = toast.loading("Updating course details...");
     try {
         console.log("course ID :", ...data);
@@ -29,7 +29,7 @@ export const editCourseDetails = async (data, token,dispatch) => {
         if (!response.data.success) {
             throw new Error("not able to Edit the course");
         }
-        console.log("this is after the edit course", response);
+        console.log("this is after the edit course", response.data.data);
         dispatch(setCourse(response.data.data));
         dispatch(updateCourseInList(response.data.data));
         toast.dismiss(toastId);
@@ -150,6 +150,22 @@ export const createSubSection = async(data,token,dispatch)=>{
         console.log("Error in creation of the subsection",error);
         toast.dismiss(toastId);
         toast.error("Failed to create subsection");
+    }
+};
+
+export const deleteSubSection = async(data,token,dispatch) =>{
+    try{
+        const response = await apiConnector("POST",DELETE_SUBSECTION_API,data,{
+            Authorization:`Bearer ${token}`
+        });
+        if(!response.data.success){
+            throw new Error("Error in deletion of the subsection");
+        }
+        console.log("response after deletion of the subsection",response);
+        dispatch(setCourse(response.data.updatedCourse));
+
+    } catch(error){
+        console.log("Error in deletion of the subsection",error);
     }
 };
 

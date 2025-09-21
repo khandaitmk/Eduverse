@@ -18,6 +18,7 @@ function CourseInformationForm() {
   const {register,handleSubmit,setValue,getValues,formState:{errors}}=useForm();
   const dispatch=useDispatch();
   const [preview,setPreview]=useState(null);
+  const [chip,setChip]=useState([]);
 
   const {course,editCourse}=useSelector((state) => state.course);
   const [loading,setLoading]= useState(false);
@@ -41,12 +42,13 @@ function CourseInformationForm() {
 
     if(editCourse){
       
-      console.log("course tags :",course.tags);
+      console.log("course tags :",JSON.stringify(course.tag));
       setValue("courseTitle",course.courseName);
       setValue("shortDesc",course.courseDescription);
       setValue("coursePrice",course.price);
       setValue("courseCategory",course.category);
-      setValue("courseTag",course.tags);
+      setValue("courseTag",JSON.stringify(course.tag));
+      setChip(course.tag);
       setValue("thumbnail",course.thumbnail);
       setPreview(course.thumbnail);
       setValue("courseBenefits",course.whatYouWillLearn);
@@ -200,7 +202,7 @@ function CourseInformationForm() {
         </div>
 
             {/* taggs with chip */}
-        <ChipInputComponent name={"courseTag"} register={register} errors={errors} setValue={setValue} getValues={getValues} label={"Tags"} placeholder={"Enter Tag and Press Enter"} />
+        <ChipInputComponent name={"courseTag"} chip={chip} setChip={setChip} register={register} errors={errors} setValue={setValue} getValues={getValues} label={"Tags"} placeholder={"Enter Tag and Press Enter"} />
         
         {/* course Thumbnail */}
             <Upload name={"thumbnail"} register={register} setValue={setValue} getValues={getValues} label={"Course Thumbnail"} preview={preview} setPreview={setPreview}></Upload>

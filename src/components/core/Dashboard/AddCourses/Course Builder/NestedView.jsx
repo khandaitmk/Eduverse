@@ -5,9 +5,10 @@ import { MdEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
-import { deletSection } from '../../../../../services/operations/courseDetailsAPI';
+import { deleteSubSection, deletSection } from '../../../../../services/operations/courseDetailsAPI';
 // import { updateSection } from '../../../../../services/operations/courseDetailsAPI';
 import SubSectionalModal from './SubSectionalModal';
+import ConfirmationModel from '../../../../common/ConfirmationModel';
 
 function NestedView(props) {
     const {setSectionId,setEditSectionName,setValue}=props;
@@ -16,6 +17,7 @@ function NestedView(props) {
     const [addSubSection,setAddSubSection]=useState(null);
     const [editSubSection,setEditSubSection] =useState(null);
     const [viewSubSection,setViewSubSection] =useState(null);
+    const [confirmationModel,setConfirmationModel]=useState(null);
     const dispatch=useDispatch();
 
     const handleUpdateSection = async(section)=>{
@@ -32,6 +34,12 @@ function NestedView(props) {
     const handleDeleteSection = async (section) =>{
         const result = await deletSection({sectionId:section._id},token,dispatch);
         setValue("sectionName","")
+        setConfirmationModel(null);
+
+    };
+    const handleDeleteSubSection = async (subSection) =>{
+        const result = await deleteSubSection({subSectionId:subSection._id},token,dispatch);
+        setConfirmationModel(null);
     };
 
     
@@ -53,7 +61,17 @@ function NestedView(props) {
                                 <MdEdit size={25}></MdEdit>
                             </button>
 
-                            <button onClick={()=> handleDeleteSection(section)} type='button' className=' cursor-pointer'>
+                            <button 
+                            onClick={()=> setConfirmationModel(
+                                {
+                                    text1:"Are you sure?",
+                                    text2:"You won't be able to revert this!",
+                                    btnText1:"Cancel",
+                                    btnText2:"Delete",
+                                    btn1Handler:() => setConfirmationModel(null),
+                                    btn2Handler:() => handleDeleteSection(section)
+                                }
+                            )} type='button' className=' cursor-pointer'>
                                 <MdDeleteOutline size={25}></MdDeleteOutline>
                             </button>
                             <div className='w-[1px] bg-richblack-300 h-[23px]'></div>
@@ -80,7 +98,17 @@ function NestedView(props) {
                                                     <MdEdit size={25}></MdEdit>
                                                 </button>
 
-                                                <button  type='button' className=' cursor-pointer'>
+                                                <button 
+                                                onClick={()=> setConfirmationModel(
+                                                    {
+                                                        text1:"Are you sure?",
+                                                        text2:"You won't be able to revert this!",
+                                                        btnText1:"Cancel",
+                                                        btnText2:"Delete",
+                                                        btn1Handler:() => setConfirmationModel(null),
+                                                        btn2Handler:() => handleDeleteSubSection(sub)
+                                                    })}
+                                                      type='button' className=' cursor-pointer'>
                                                     <MdDeleteOutline size={25}></MdDeleteOutline>
                                                 </button>
                                                 
@@ -110,6 +138,9 @@ function NestedView(props) {
                 addSubSection ?<SubSectionalModal modalData={addSubSection} setModalData={setAddSubSection} add={true} edit={false} view={false}></SubSectionalModal>:
                 editSubSection ?<SubSectionalModal  modalData={editSubSection} setModalData={setEditSectionName} add={false} edit={true} view={false}></SubSectionalModal>:
                 viewSubSection ?<SubSectionalModal  modalData={viewSubSection} setModalData={setViewSubSection} add={false} edit={false} view={true}></SubSectionalModal>:null
+            }
+            {
+                confirmationModel && <ConfirmationModel data={confirmationModel}></ConfirmationModel>
             }
     </div>
   )

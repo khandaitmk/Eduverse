@@ -84,7 +84,7 @@ exports.updateSubSection=async (req,res) =>{
 exports.deleteSubSection=async (req,res) =>{
     try{
         // get id Assuming that we are sending the id in params
-        const {subSectionId}=req.params;
+        const subSectionId=req.params.subSectionId ||req.body.subSectionId;
         if(!subSectionId){
             return res.status(400).json({
                 success:false,
@@ -94,16 +94,25 @@ exports.deleteSubSection=async (req,res) =>{
         // use findById and delete and delete the sub section
         const deletedSubSection= await SubSection.findByIdAndDelete(subSectionId);
         // does we need to delete the sub-section id from the subSection section array in Section 
-        await Section.updateMany({subSection:subSectionId},{$pull:{subSection:subSectionId}});
+        const updatedSection = await Section.findOneAndUpdate(
+            {subSection:subSectionId},
+            {$pull:{subSection:subSectionId}},
+            {new:true}
+        );
+        const updatedCourse = await Course.findOne({courseContent:updatedSection._id}).populate({path:"courseContent",
+            populate:{path:"subSection"}}
+        ).exec();
         // return response
         return res.status(200).json({
             success:true,
-            message:"the sub-section  deleted successfully"
+            message:"the sub-section  deleted successfully",
+            updatedCourse
         })
     } catch(error){
         return res.status(400).json({
             success:false,
-            message:"Failed to delete the sub-section "
+            message:"Failed to delete the sub-section ",
+            error:error.message
         });
     }
 };

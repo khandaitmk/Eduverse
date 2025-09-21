@@ -6,7 +6,7 @@ import { RxCross2 } from "react-icons/rx";
 
 function ChipInputComponent(props) {
     const {register}=props;
-    const [chip,setChip]=useState([]);
+    const {chip,setChip}=props;
     const [inputValue,setInputValue]=useState("");
 
     useEffect(() =>{

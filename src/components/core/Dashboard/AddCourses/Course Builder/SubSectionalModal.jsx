@@ -22,7 +22,7 @@ function SubSectionalModal(props) {
         <div className='w-11/12 max-w-[700px] mt-0 overflow-auto rounded-lg border-1 border-richblack-400 bg-richblack-800'>
             <div className='bg-richblack-700 text-white flex justify-between p-4 rounded-lg'>
                     <p className=' text-lg  font-bold'>{edit && "Editing"} {add && "Adding"} {view && "Viewing"} Lecture</p>
-                    <button type='button'><RxCross2></RxCross2> </button>
+                    <button onClick={()=> setModalData(null)} type='button'><RxCross2></RxCross2> </button>
             </div>
             <form action="" method='post' className=' flex flex-col gap-5 text-white w-11/12 mx-auto my-10' onSubmit={handleSubmit(handleSub)}>
                
@@ -38,7 +38,16 @@ function SubSectionalModal(props) {
                     <Upload name={"lecVideo"} register={register} setValue={setValue} getValues={getValues}></Upload>
                 </div>
                 <div className=' flex justify-end'>
-                    <button type='submit' className='p-2 px-6 cursor-pointer bg-yellow-50 text-richblack-900 font-semibold rounded-md '>Save</button>
+                    {
+                        (add || edit) &&
+                        (
+                            <button type='submit' className='p-2 px-6 cursor-pointer bg-yellow-50 text-richblack-900 font-semibold rounded-md '>
+                                {
+                                    add ? "Add Lecture" : edit && "Update Lecture"
+                                }
+                            </button>
+                        )
+                    }
                 </div>
             </form>
         </div>

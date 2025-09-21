@@ -34,7 +34,7 @@ exports.createCourse= async (req,res) =>{
                 message:"This route is protected for instructor only"   
             });
         }
-        // check for the tag
+        // check for the tag this is categiry not tag....
         const tagDetails =await Category.findOne({name:category});
         if(!tagDetails){
             return res.status(400).json({
@@ -60,6 +60,7 @@ exports.createCourse= async (req,res) =>{
             whatYouWillLearn,
             price,
             category:tagDetails._id,
+            tag:JSON.parse(tag),
             thumbnail:thumbnailImage.secure_url,
             instructions,
             status:"Draft"
