@@ -186,10 +186,10 @@ exports.getAllCourses= async (req,res) =>{
 exports.getCourseDetails= async (req,res) =>{
     try{
         // fetch course id
-        const {courseId}=req.body;
-        
+        const {courseId}=req.params;
+        console.log("course Id:",courseId);
         // find out course details
-        const courseDetails=await Course.find({_id:courseId})
+        const courseDetails=await Course.findById(courseId)
                                     .populate(
                                         {
                                             path:"instructor",
@@ -199,10 +199,10 @@ exports.getCourseDetails= async (req,res) =>{
                                         }
                                     )
                                     .populate("category")
-                                    .populate("rartingAndReview")
+                                    .populate("ratingAndReviwes")
                                     .populate(
                                         {
-                                            path:"courseContenet",
+                                            path:"courseContent",
                                             populate:{
                                                 path:"subSection"
                                             }
@@ -210,6 +210,7 @@ exports.getCourseDetails= async (req,res) =>{
                                         }
                                     )
                                     .exec();
+            console.log("course details :",courseDetails);
         // validation
         if(!courseDetails){
             return res.status(400).json({
@@ -222,13 +223,14 @@ exports.getCourseDetails= async (req,res) =>{
         return res.status(200).json({
             success:true,
             message:"course details fetched successfully",
-            data:courseDetails
+            courseDetails
         });
     } catch(error){
         console.log("error:",error);
         return res.status(400).json({
             success:false,
-            message:"failed to fetch all the course details"
+            message:"failed to fetch all the course details",
+            error:error.message
         });
     }
 };

@@ -35,8 +35,8 @@ const Navbar = () => {
         fetchSubLinks();
     },[])
 
+    const location = useLocation();
     function matchRoute(route){
-        const location=useLocation();
         return (matchPath(route,location.pathname))
     };
 
@@ -56,14 +56,14 @@ const Navbar = () => {
                         NavbarLinks.map((link,index)=>(
                             <li key={index}>
                                 {
-                                    link.title==="Catalog"?(<div className={`relative flex gap-1 items-center group cursor-pointer p-2`}>
+                                    link.title==="Courses"?(<div className={`relative flex gap-1 items-center group cursor-pointer p-2`}>
                                                             <p>{link.title}</p>
                                                             <FaChevronDown></FaChevronDown>
                                                             <div className='absolute top-full left-1/2 invisible group-hover:visible bg-richblack-5  justify-center items-center text-center w-[250px] translate-x-[-40%] translate-y-[2px] rounded-md transition-all duration-200 z-20'>
                                                                 <div className=' p-2'>
                                                                 {
                                                                     subLinks.map((obj,index)=>(
-                                                                        <Link key={index}  to={""}>
+                                                                        <Link key={index}  to={`/catalog/${encodeURIComponent(obj.name)}`}>
                                                                             <div  className=' text-richblack-500 hover:bg-richblack-100 hover:text-richblack-900 rounded-md p-2 transition-all duration-200'>
                                                                             {obj.name}
                                                                         </div>

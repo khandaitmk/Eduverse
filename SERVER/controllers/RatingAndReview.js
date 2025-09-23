@@ -1,7 +1,7 @@
 const RatingAndReview=require("../models/RatingAndReview");
 const Course=require("../models/Course");
 const User=require("../models/User");
-
+const mongoose=require("mongoose");
 // function name is only rating but it is also for the reviews only for write fast ........***
 
 // Create rating
@@ -53,7 +53,8 @@ exports.createRatingAndReview= async (req,res) =>{
 // get average rating
 exports.averageRating =async (req,res) =>{
     try{
-        const courseId=req.body.courseId;
+        const courseId=req.body;
+        console.log("courseId in average rating backend",courseId);
         // calculate course rating
 
         // here we used agregate because it allows us to perform step by step operations on the data that is first matches all courses and then  group all the ratings and then calculate the average rating
@@ -90,7 +91,8 @@ exports.averageRating =async (req,res) =>{
     } catch(error){
         return res.status(400).json({
             success:false,
-            message:"failed to calculate the average of the ratings"
+            message:"failed to calculate the average of the ratings",
+            error: error.message
         });
     }
 };

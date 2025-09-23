@@ -22,16 +22,23 @@ import PurchasedHistory from './components/core/Dashboard/PurchasedHistory';
 import PrivateRoute from './components/core/auth/PrivateRoute';
 import Settings from './components/core/Dashboard/Settings';
 import AddCourse from './components/core/Dashboard/AddCourses/AddCourses';
-import MyCourses from './components/core/Dashboard/MyCourses/MyCourses'
+import MyCourses from './components/core/Dashboard/MyCourses/MyCourses';
+import Catalog from './pages/Catalog';
+import CourseDetails from './pages/CourseDetails';
+import Loader from './components/common/Loader';
 function App() {
   const [isLogedIn,setIsLogedIn]=useState(false);
   const {user}=useSelector((state)=>(state.profile));
+  const {loading}=useSelector((state)=>(state.auth));
   console.log("User in App.jsx", user);
   return (
     <div className=" w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar></Navbar>
+      {loading && <Loader></Loader>}
+
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/catalog/:catalogName" element={<Catalog></Catalog>} />
         <Route path="/login" element={<LoginPage isLogedIn={isLogedIn} setIsLogedIn={setIsLogedIn} />} />
         <Route path="/signup" element={<SignupPage isLogedIn={isLogedIn} setIsLogedIn={setIsLogedIn} />} />
         <Route path="/verify-email" element={<VerifyEmail></VerifyEmail>} />
@@ -40,6 +47,8 @@ function App() {
         <Route path="/update-password/:token" element={<UpdatePassword></UpdatePassword>} />
         <Route path="/about" element={<AboutPage></AboutPage>} />
         <Route path="/contact" element={<ContactPage></ContactPage>} />
+        <Route path="/courses/:courseId" element={<CourseDetails></CourseDetails>} />
+
         <Route element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}>
         {/* Common routes for all users */}
           <Route path="dashboard/my-profile" element={<MyProfile />} />

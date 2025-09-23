@@ -55,4 +55,4 @@ const courseSchema=new mongoose.Schema({
 
 });
 
-module.exports=mongoose.model("Courses",courseSchema);
+module.exports=mongoose.model("Course",courseSchema);

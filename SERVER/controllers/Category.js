@@ -82,7 +82,7 @@ exports.categoryPageDetails=async (req,res) => {
 
         // get course for the other categories
 
-        const categoriesExceptSelected=await Category.find({_id:{$ne:categoryID}}).populate("course");
+        const categoriesExceptSelected=await Category.find({_id:{$ne:categoryId}}).populate("course");
         const differentCourses =[];
         for (const category of categoriesExceptSelected){
             differentCourses.push(...category.course);
@@ -108,7 +108,8 @@ exports.categoryPageDetails=async (req,res) => {
     } catch(error){
         return res.status(500).json({
             success:false,
-            message:"failed to fetch the category page details"
+            message:"failed to fetch the category page details",
+            error: error.message
         });
     }
 };

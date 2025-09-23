@@ -20,14 +20,14 @@ Router.post("/addSubSection",auth, isInstructor, createSubSection);
 Router.post("/updateSubSection",auth, isInstructor, updateSubSection);  
 Router.post("/deleteSubSection",auth, isInstructor, deleteSubSection);
 Router.get('/getAllCourses', getAllCourses);
-Router.get('/getCourseDetails', getCourseDetails);
+Router.get('/getCourseDetails/:courseId', getCourseDetails);
 Router.get("/getInstructorCourses", auth,isInstructor, getAllInstructorCourses);
 
 
 // Category
 Router.post("/createCategory", auth, isAdmin, createCategory);
 Router.get("/showAllCategories", showAllCategories);
-Router.post("/categoryPageDetails", auth, categoryPageDetails);
+Router.post("/categoryPageDetails",categoryPageDetails);
 
 // Rating and review
 

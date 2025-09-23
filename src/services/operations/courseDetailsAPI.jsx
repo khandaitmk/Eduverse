@@ -1,8 +1,11 @@
-import { courseEndpoints } from "../apis";
+import { courseEndpoints,ratingsEndpoints } from "../apis";
 import {apiConnector} from "../apiConnector";
 import { setCourse, updateCourseInList } from "../../slices/courseSlice";
 import toast from "react-hot-toast";
-const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API,DELETE_SUBSECTION_API}=courseEndpoints;
+// import  from "../apis";
+const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API,DELETE_SUBSECTION_API,COURSE_DETAILS_API}=courseEndpoints;
+const {GET_AVG_RATING}=ratingsEndpoints;
+
 export const fetchCourseCategories = async() =>{
     let result=[];
     try{
@@ -63,6 +66,20 @@ export const addCourseDetails = async (data,token) =>{
         console.log("Error occured in the course creation operation ",error);
         toast.dismiss(toastId);
         toast.error("Failed to create course");
+    }
+};
+
+export const getCourseDetails = async(courseId,token,navigate,dispatch) =>{
+    try{
+        console.log("course id: ",courseId);
+        const response = await apiConnector("GET",`${COURSE_DETAILS_API}/${courseId}`);
+        if(!response.data.success){
+            throw new Error("Could not fetch the course details");
+        }   
+        console.log("REsponse of the courseDetails :",response.data.courseDetails);
+        return response.data.courseDetails;
+    } catch(error){
+        console.log("ERror in the course detials fetching :",error);
     }
 };
 
@@ -177,9 +194,22 @@ export async function getAllInstructorCourses(token){
         if(!response.data.success){
             throw new Error("Error in fetching the instructor courses");
         }
-        console.log("instructor courses api response",response.data.data);
+        // console.log("instructor courses api response",response.data.data);
         return response.data.data;
     } catch(error){
         console.log("Error in fetching the instructor courses",error);
     }
 };
+
+export const getAverageRating = async(courseId) =>{
+    try{
+        const response = await apiConnector("GET",GET_AVG_RATING,{courseId:courseId});
+        if(!response.data.success){
+            throw new Error("Could not fetch the average rating");
+        }
+        // console.log("average rating api response",response.data.averageRating);
+        return response.data.averageRating;
+    } catch(error){
+        console.log("Error in fetching the average rating",error);
+    }
+}
