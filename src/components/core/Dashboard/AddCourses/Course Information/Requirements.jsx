@@ -2,10 +2,9 @@ import React, { use } from 'react'
 import { useState,useEffect } from 'react';
 
 function Requirements(props) {
-    const {name,register,setValue,getValues}=props;
+    const {name,register,setValue,getValues,requirementList,setRequirementList}=props;
     const [req,setReq]=useState("");
-    const [requirementList,setRequirementList]=useState([]);
-
+    
     useEffect(() =>{
         register(name,{required:true});
     },[]);

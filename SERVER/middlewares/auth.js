@@ -41,12 +41,12 @@ exports.auth= async (req,res,next) =>{
 
 exports.isStudent=async (req,res,next)=>{
     try{
-        const {accoutType,email,id}=req.user;
+        const {accountType,email,id}=req.user;
         
-        if(accoutType !== "Student"){
-            return res.status.json({
+        if(accountType !== "Student"){
+            return res.status(403).json({
                 success:false,
-                message:"this is protected rout for student only"
+                message:"this is a protected route for students only"
             });
         };
         next();
@@ -55,7 +55,8 @@ exports.isStudent=async (req,res,next)=>{
         console.log("error :",error);
         return res.status(400).json({
             success:false,
-            message:"failde to verify the secured route"
+            message:"failde to verify the secured route",
+            error:error.message
         })
     }
 };

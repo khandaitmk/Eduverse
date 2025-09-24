@@ -78,3 +78,7 @@ export const settingsEndpoints = {
   DELETE_PROFILE_API: BASE_URL + "/profile/delete-account",
   
 };
+
+export const payments={
+  PAYLINK:BASE_URL + "/payment/pay",
+};

@@ -91,11 +91,11 @@ const Navbar = () => {
             <div className=' flex gap-5 items-center'>
                 {
                     user && user?.accountType !=="Instructor" &&(
-                        <Link >
+                        <Link to={"/dashboard/cart"} className='relative'>
                             <FaCartShopping size={"25px"}></FaCartShopping>
                             {
                                 (totalItems>0)&&(
-                                    <span>
+                                    <span className='absolute bottom-3 bg-yellow-50 w-4 text-richblack-900 h-4 left-3 flex justify-center items-center rounded-full animate-bounce'>
                                         {totalItems}
                                     </span>
                                 )

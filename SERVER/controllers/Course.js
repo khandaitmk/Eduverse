@@ -35,7 +35,7 @@ exports.createCourse= async (req,res) =>{
             });
         }
         // check for the tag this is categiry not tag....
-        const tagDetails =await Category.findOne({name:category});
+        const tagDetails =await Category.findById(category);
         if(!tagDetails){
             return res.status(400).json({
                 success:false,
@@ -62,7 +62,7 @@ exports.createCourse= async (req,res) =>{
             category:tagDetails._id,
             tag:JSON.parse(tag),
             thumbnail:thumbnailImage.secure_url,
-            instructions,
+            instructions:JSON.parse(instructions),
             status:"Draft"
         });
 

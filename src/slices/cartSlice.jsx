@@ -14,30 +14,30 @@ const cartSlice = createSlice({
     reducers:{
         addToCart:(state,action) =>{
             const course = action.payload;
-            const existingCourse = state.cart.find(item => item.id === course.id);
-             if(!existingCourse){
+            const existingCourse = state.cart.find(item => item._id === course._id);
+            if(existingCourse){
                 toast.error("Course already in cart");
                 return;
-             }
+            }
 
              state.cart.push(course);
-             state.total += course.price;
+             state.total += Number(course.price);
              state.totalItems += 1;
                 localStorage.setItem('cart',JSON.stringify(state.cart));
-                localStroage.setItem("total",JSON.stringify(state.total));
+                localStorage.setItem("total",JSON.stringify(state.total));
                 localStorage.setItem("totalItems",JSON.stringify(state.totalItems));
                 toast.success("Course added to cart");
         },
         removeFromCart: (state,action) => {
             const courseId = action.payload;
-            const courseIndex = state.cart.findIndex(item => item.id === courseId);
+            const courseIndex = state.cart.findIndex(item => item._id === courseId);
             if(courseIndex === -1){
                 toast.error("Course not found in cart");
                 return;
             }
             const course = state.cart[courseIndex];
             state.cart.splice(courseIndex,1);
-            state.total -= course.price;
+            state.total -= Number(course.price) || 0;
             state.totalItems -= 1;
             localStorage.setItem('cart',JSON.stringify(state.cart));
             localStorage.setItem("total",JSON.stringify(state.total));

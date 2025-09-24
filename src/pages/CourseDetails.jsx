@@ -8,20 +8,34 @@ import { getCourseDetails } from '../services/operations/courseDetailsAPI';
 import RatingStars from '../components/common/RatingStars';
 import { FaCaretRight } from "react-icons/fa";
 import { setLoading } from '../slices/authSlice';
+import { addToCart } from '../slices/cartSlice';
 
-function CourseDetails() {
+
+function CourseDetailsPage() {
     const [avgRating,setAvgRating]=useState(0);
     const [courseDetails,setCourseDetails]=useState(null);
     const {courseId}=useParams();
+    const {user}=useSelector((state)=> state.auth);
+    const [visible,setVisible]=useState(false);
     const {loading}=useSelector((state)=>(state.auth));
-
+    const [enrolled,setEnrolled]=useState(false);
     const {token} = useSelector((state)=>(state.auth));
+    const {cart} =useSelector((state)=>state.cart);
     const dispatch = useDispatch();
     const navigate =useNavigate();
     useEffect(()=>{
         getRating();
         getCDetails();
     },[courseId]);
+
+    useEffect(()=>{
+        if(courseDetails){
+            const enrolled = courseDetails.studentsEnrolled.find((student) => student._id === user?._id);
+            if(enrolled){
+                setEnrolled(true);
+            }
+        }
+    },[courseDetails,user?._id]);
 
     const getRating = async()=>{
         dispatch(setLoading(true));
@@ -35,9 +49,18 @@ function CourseDetails() {
         dispatch(setLoading(true));
         const result = await getCourseDetails(courseId,token,navigate,dispatch);
         setCourseDetails(result);
-        dispatch(setLoading(false));};
+        dispatch(setLoading(false));
+    };
+    const handleAddToCart = () =>{
+        if(!token){
+            navigate('/login');
+            return;
+        }   
+        dispatch(addToCart(courseDetails));
+
+    };
   return (
-    <div>
+    <div className=''>
         {/* section -1 */}
         <div className='bg-richblack-800 relative'>
             <div className='w-11/12 mx-auto p-20 text-white text-xl flex flex-col gap-4'>
@@ -62,8 +85,21 @@ function CourseDetails() {
                 <div className=' '><img className='rounded-md' src={courseDetails?.thumbnail} alt="" /></div>
                 <p className=' text-3xl text-white font-semibold'>Rs. {courseDetails?.price}</p>
                 <div className=' flex flex-col gap-3 w-full'>
-                    <button className='p-2 px-4 bg-yellow-50 text-richblack-900 cursor-pointer font-semibold rounded-md'>Buy Now</button>
-                    <button className='p-2 px-4 bg-richblack-800 font-semibold cursor-pointer text-white  rounded-md'>Add to Cart</button>
+                    {
+                        ("Instructor"!==user?.accountType) && (<div className=' flex flex-col gap-2'>
+                            {
+                                !enrolled ? (<button className='p-2 px-4 bg-yellow-50 text-richblack-900 cursor-pointer font-semibold rounded-md'>Buy Now</button>
+                                ) :(<button onClick={()=>{navigate("/dashboard/enrolled-courses")}} className='p-2 px-4 bg-yellow-50 text-richblack-900 cursor-pointer font-semibold rounded-md'>Go to Course</button>)
+                            }
+                            {
+                                enrolled ?(<div></div>):(
+                                    cart?.find((item)=> item?._id === courseDetails?._id)?
+                                    (<button onClick={()=>navigate("/dashboard/cart")} className='p-2 px-4 bg-richblack-800 font-semibold cursor-pointer text-white  rounded-md'>Go to Cart</button>):
+                                    (<button onClick={handleAddToCart} className='p-2 px-4 bg-richblack-800 font-semibold cursor-pointer text-white  rounded-md'>Add to Cart</button>)
+                                )
+                            }
+                        </div>)
+                    }
                 </div>
                 <p className='text-sm text-richblack-100 text-center'>30-Day Money-Back Guarantee</p>
                 <p className=' text-xl font-semibold text-richblack-5'>This Course Includes :</p>
@@ -80,26 +116,63 @@ function CourseDetails() {
             </div>
         </div>
         {/* section-2 */}
-        <div className='bg-richblack-900 w-[60%] h-[800px]'>
-            <div>
-                <p>What you'll learn</p>
-                <p>{courseDetails?.whatYouWillLearn}</p>
+        <div className='bg-richblack-900 w-[60%] p-10 flex flex-col gap-7 ml-10 mt-10'>
+            <div className=' border border-richblack-300 p-10 flex flex-col gap-5'>
+                <p className='text-white text-3xl font-semibold'>What you'll learn</p>
+                <p className=' text-richblack-100 ml-4'>{courseDetails?.whatYouWillLearn}</p>
             </div>
             <div>
+                <p className=' text-3xl text-white font-semibold'>Course Content</p>
+                <div>
+            {courseDetails?.courseContent.map((content, index1) => (
+                <div key={index1} className="w-[70%]">
+                {/* Section Header */}
+                <div
+                    onClick={() => setVisible(visible === index1 ? null : index1)}
+                    className="text-white transition-all duration-500 bg-richblack-700 h-10 flex items-center pl-5 text-xl font-semibold cursor-pointer"
+                >
+                    {index1 + 1}. {content.sectionName}
+                </div>
+
+                {/* Subsections */}
+                <div
+                        className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                        visible === index1 ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                        }`}
+                    >
+                        {content?.subSection.map((sub, index2) => (
+                        <div
+                            key={index2}
+                            className="text-white bg-richblack-900 border border-richblack-500 px-5 py-2 text-lg font-semibold"
+                        >
+                            <p>
+                            {index1 + 1}.{index2 + 1} {sub.title}
+                            </p>
+                            <p className="text-sm text-richblack-300">
+                            {}
+                            </p>
+                        </div>
+                        ))}
+                    </div>
+                    </div>
+                ))}
+                </div>
 
             </div>
-            <div>
-                <p>Author</p>
-                <div className='flex gap-3 items-center'>
+            <div className=' flex flex-col gap-3 mt-10 text-white'>
+                <p className=' text-3xl font-semibold'>Author</p>
+                <div className='flex gap-1 items-center'>
                     <div><img width={25} className=' rounded-full' src={courseDetails?.instructor?.image} alt="" /></div>
                     {courseDetails?.instructor.firstName} {courseDetails?.instructor.lastName}
                 </div>
             </div>
         </div>
+        <div>
         <div className=' h-[1px] w-full bg-richblack-600'></div>
         <Footer></Footer>
+        </div>
     </div>
   )
 }
 
-export default CourseDetails
+export default CourseDetailsPage;

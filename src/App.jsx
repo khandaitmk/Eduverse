@@ -24,7 +24,7 @@ import Settings from './components/core/Dashboard/Settings';
 import AddCourse from './components/core/Dashboard/AddCourses/AddCourses';
 import MyCourses from './components/core/Dashboard/MyCourses/MyCourses';
 import Catalog from './pages/Catalog';
-import CourseDetails from './pages/CourseDetails';
+import CourseDetailsPage from './pages/CourseDetails';
 import Loader from './components/common/Loader';
 function App() {
   const [isLogedIn,setIsLogedIn]=useState(false);
@@ -47,7 +47,7 @@ function App() {
         <Route path="/update-password/:token" element={<UpdatePassword></UpdatePassword>} />
         <Route path="/about" element={<AboutPage></AboutPage>} />
         <Route path="/contact" element={<ContactPage></ContactPage>} />
-        <Route path="/courses/:courseId" element={<CourseDetails></CourseDetails>} />
+        <Route path="/courses/:courseId" element={<CourseDetailsPage></CourseDetailsPage>} />
 
         <Route element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}>
         {/* Common routes for all users */}
