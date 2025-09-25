@@ -1,7 +1,7 @@
     import React from 'react'
-    import { apiConnector } from '../apiConnector';
+    import { apiConnector } from '../apiconnector';
     import { profileEndpoints, settingsEndpoints } from '../apis'
-import { setUser } from '../../slices/profileSlice';
+    import { setUser } from '../../slices/profileSlice';
     import {toast} from "react-hot-toast";
     import { logOut } from './authAPI';
 

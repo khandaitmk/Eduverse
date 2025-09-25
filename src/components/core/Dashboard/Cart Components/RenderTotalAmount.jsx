@@ -16,7 +16,7 @@ function RenderTotalAmount() {
         if(token){
             console.log(courses);
             console.log("user email :",user?.email);
-            const result = await payment({courses,userEmail:user.email},token);
+            const result = await payment({courses,userEmail:user.email},token,dispatch);
         }
         else{
             navigate("/login");

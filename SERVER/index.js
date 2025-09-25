@@ -5,6 +5,7 @@ const userRoutes=require("./routes/User");
 const courseRoutes=require("./routes/Course");
 const profileRoutes=require("./routes/Profile");
 const paymentRoutes=require("./routes/Payment");
+const { stripeWebhook } = require("./config/stripe");
 
 require("dotenv").config();
 
@@ -19,6 +20,9 @@ const PORT =process.env.PORT || 4000;
 
 // connect with db
 connectDB();
+
+// mount Stripe webhook BEFORE express.json so raw body is available
+app.post("/api/v1/payment/webhook", express.raw({ type: "application/json" }), stripeWebhook);
 
 // use middlewares
 app.use(express.json());

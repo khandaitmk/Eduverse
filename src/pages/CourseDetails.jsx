@@ -9,13 +9,13 @@ import RatingStars from '../components/common/RatingStars';
 import { FaCaretRight } from "react-icons/fa";
 import { setLoading } from '../slices/authSlice';
 import { addToCart } from '../slices/cartSlice';
-
+import { payment } from '../services/operations/Payment';
 
 function CourseDetailsPage() {
     const [avgRating,setAvgRating]=useState(0);
     const [courseDetails,setCourseDetails]=useState(null);
     const {courseId}=useParams();
-    const {user}=useSelector((state)=> state.auth);
+    const {user}=useSelector((state)=> state.profile);
     const [visible,setVisible]=useState(false);
     const {loading}=useSelector((state)=>(state.auth));
     const [enrolled,setEnrolled]=useState(false);
@@ -59,6 +59,17 @@ function CourseDetailsPage() {
         dispatch(addToCart(courseDetails));
 
     };
+    async function handleBuyCourses(){
+            const courses=[courseId];
+            if(token){
+                console.log(courses);
+                console.log("user email :",user?.email);
+                const result = await payment({courses,userEmail:user?.email},token,dispatch);
+            }
+            else{
+                navigate("/login");
+            }
+        }
   return (
     <div className=''>
         {/* section -1 */}
@@ -88,7 +99,7 @@ function CourseDetailsPage() {
                     {
                         ("Instructor"!==user?.accountType) && (<div className=' flex flex-col gap-2'>
                             {
-                                !enrolled ? (<button className='p-2 px-4 bg-yellow-50 text-richblack-900 cursor-pointer font-semibold rounded-md'>Buy Now</button>
+                                !enrolled ? (<button onClick={handleBuyCourses} className='p-2 px-4 bg-yellow-50 text-richblack-900 cursor-pointer font-semibold rounded-md'>Buy Now</button>
                                 ) :(<button onClick={()=>{navigate("/dashboard/enrolled-courses")}} className='p-2 px-4 bg-yellow-50 text-richblack-900 cursor-pointer font-semibold rounded-md'>Go to Course</button>)
                             }
                             {

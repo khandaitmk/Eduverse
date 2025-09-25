@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { apiConnector } from '../../../services/apiconnector';
 import { getAllEnrolledCourses } from '../../../services/operations/profileAPI';
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+
 
 function EnrolledCourse() {
   const {token} =useSelector((state) => state.auth);
@@ -37,32 +40,34 @@ function EnrolledCourse() {
         <h1 className=' text-3xl text-richblack-50'>Enrolled Courses</h1>
         { 
           
-          (enrolledCourses || enrolledCourses?.length === 0) ? (<div> <p>You have not enrolled in any courses yet</p>  </div>) : 
-          (<div>
-            <div className=' flex'>
-              <p>Course Name</p>
-              <p>Duration</p>
-              <p>Progress</p>
-            </div>
-            <div>
-              <div>
+          ( enrolledCourses?.length === 0) ? (<div> <p>You have not enrolled in any courses yet</p>  </div>) : 
+          (<Table className=' mt-10 border border-richblack-500'>
+            <Thead className='border-b border-richblack-500 '>
+              <Tr className=''>
+                <Th className=' text-left p-2 w-[50%]'>Course Name</Th>
+                <Th className=' text-left p-2'>Duration</Th>
+                <Th className=' text-left p-2'>Progress</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              
                 {
-                  (enrolledCourses>0) && enrolledCourses.map((course,index) => (
-                    <div key={index}>
-
-                      <div>
-                        <img src={course.thumbnail} alt="" />
-                        <div>
-                          <p>{course.courseName}</p>
-                          <p>{course.courseDescription}</p>
+                  enrolledCourses?.map((course,index) => (
+                    <Tr key={index} className=' border-b border-richblack-500'>
+                      <Td className=' flex  gap-10 p-3 w-[50%]'>
+                        <div className='w-[150px] rounded-md'><img width={"150px"} className=' rounded-md' src={course.thumbnail} alt="" /></div>
+                        <div className=' flex flex-col gap-3 items-center justify-center'>
+                          <p className=' text-white text-lg font-semibold'>{course.courseName}</p>
+                          <p className=' text-richblack-400' >{course.courseDescription}</p>
                         </div>
-                      </div>
+                      </Td>
 
-                      <div>
-                    
-                      </div>
+                      <Td>
+                        {'duration dalna hai'}
+                      </Td>
 
-                      <div>
+                      <Td>
                         {
                           progressData?.map((progress,index) =>{
                             if(progress.courseId === course?._id){
@@ -82,13 +87,14 @@ function EnrolledCourse() {
                             }
                           })
                         }
-                      </div>
-                    </div>
+                      </Td>
+                      <Td></Td>
+                    </Tr>
                   ))
                 }
-              </div>
-            </div>
-          </div>)
+              
+            </Tbody>
+          </Table>)
         }
       </div>
     </div>

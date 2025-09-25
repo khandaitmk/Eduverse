@@ -88,7 +88,7 @@ function Catalog() {
                       </div>
                     </div>
 
-                  <div className='w-11/12 mx-auto mt-15 flex flex-col gap-10'>
+                  <div className='w-11/12 mx-auto mt-15 flex flex-col gap-10 mb-20'>
                     <h1 className='text-3xl font-semibold text-center'>Similar Courses</h1>
                     <div>
                       {/*  */}

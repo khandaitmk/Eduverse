@@ -1,5 +1,5 @@
 import { courseEndpoints,ratingsEndpoints } from "../apis";
-import {apiConnector} from "../apiConnector";
+import { apiConnector } from "../apiconnector";
 import { setCourse, updateCourseInList } from "../../slices/courseSlice";
 import toast from "react-hot-toast";
 // import  from "../apis";
