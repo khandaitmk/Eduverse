@@ -55,13 +55,13 @@ function CourseList(props) {
                                         <div className='flex flex-col justify-between'>
                                             <p className=' text-white text-lg font-semibold'>{item.courseName}</p>
                                             <p className='text-sm'>{item.courseDescription}</p>
-                                            <p className='text-[11px]'>{(item.status ==="Published")?(
-                                            <div className='flex items-center gap-1 p-0.5 bg-richblack-800 rounded-full px-1 text-yellow-50'>
+                                            <p className='text-[11px] w-fit '>{(item.status ==="Published")?(
+                                            <div className='flex items-center gap-1 p-1 bg-richblack-800 rounded-full px-2 text-yellow-50'>
                                                 <FaCircleCheck></FaCircleCheck>
                                                 <p>{item.status}</p>
                                             </div>
                                             ):(
-                                            <div className='flex items-center gap-1 p-0.5 bg-richblack-800 rounded-full px-1 text-red-500'>
+                                            <div className='flex items-center gap-1 p-1 bg-richblack-800 rounded-full px-2 text-red-500'>
                                                 <AiFillClockCircle></AiFillClockCircle>
                                                 <p>{item.status}</p>
                                             </div>

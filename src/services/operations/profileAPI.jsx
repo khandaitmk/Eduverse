@@ -1,7 +1,8 @@
     import React from 'react'
-    import { apiConnector } from '../apiconnector';
+    import { apiConnector } from '../apiConnector';
     import { profileEndpoints, settingsEndpoints } from '../apis'
     import { setUser } from '../../slices/profileSlice';
+    import { setLoading } from '../../slices/authSlice';
     import {toast} from "react-hot-toast";
     import { logOut } from './authAPI';
 
@@ -117,16 +118,17 @@
         
         let result=[];
         try{
-            
+            console.log("token :",token);
             const response = await apiConnector("GET",profileEndpoints.GET_USER_ENROLLED_COURSES_API,null,{
                 Authorization:`Bearer ${token}`
             });
-            // console.log("result :",result);
+            console.log("result :",response);
 
             if(!response.data.success){
                 throw new Error("Failed to get the enrolled courses");
             }
-            result=response.data.data;
+            console.log("enrolled data :",response.data);
+            result=response.data;
 
         } catch(error){
             console.log("ERROR in fetching the enrolled courses :",error);

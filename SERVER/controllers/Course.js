@@ -2,6 +2,7 @@ const Course=require('../models/Course');
 const Category=require('../models/Category'); 
 const User=require('../models/User');
 const {uploadFile}=require('../util/imageUploader');
+const CourseProgress = require('../models/CourseProgress');
 
 exports.createCourse= async (req,res) =>{
     try{
@@ -219,11 +220,27 @@ exports.getCourseDetails= async (req,res) =>{
             });
         }
 
+        let courseProgressCount =  await CourseProgress.findOne({courseId:courseId});
+        console.log("Course Progress :",courseProgressCount);
+
+
+        let totalTimeDuration = 0;
+        courseDetails.courseContent.forEach((content) => {
+		content.subSection.forEach((subSection) => {
+		  const timeDurationInSeconds = parseInt(subSection.timeDuration)
+		  totalTimeDuration += timeDurationInSeconds;
+		})
+	  });
+
         // return response
         return res.status(200).json({
             success:true,
             message:"course details fetched successfully",
-            courseDetails
+            courseDetails,
+            totalTimeDuration,
+            completedVideos: courseProgressCount?.completedVideos
+			? courseProgressCount?.completedVideos
+			: [],
         });
     } catch(error){
         console.log("error:",error);

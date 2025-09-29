@@ -1,0 +1,50 @@
+import React, { useEffect, useState } from 'react'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
+import ReviewModal from '../components/core/Dashboard/View-Course/ReviewModal'
+import VideoDetailsSidebar from '../components/core/Dashboard/View-Course/VideoDetailsSidebar'
+import { getCourseDetails } from '../services/operations/courseDetailsAPI'
+import { useDispatch, useSelector } from 'react-redux';
+import { setCompletedLectures, setCourseSectionData, setEntireCourseData, setTotalNoOfLectures } from '../slices/viewCourseSlice'
+
+function ViewCourse() {
+  const [reviewModal,setReviewModal] = useState(false);
+  const {courseId}=useParams();
+  const {token} = useSelector((state)=>state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(()=>{
+    const setCourseSpecifics = async() =>{
+      const courseData = await getCourseDetails(courseId,token,navigate,dispatch);
+      console.log("Course details in the View-course Section :",courseData);
+      dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
+      dispatch(setEntireCourseData(courseData.courseDetails));
+      dispatch(setCompletedLectures(courseData.completedVideos));
+      var lecture = 0;
+      courseData?.courseDetails?.courseContent?.forEach((section)=>{
+        lecture += section?.subSection?.length;
+      });
+
+      dispatch(setTotalNoOfLectures(lecture));
+
+
+    }
+    setCourseSpecifics();
+  },[courseId,token,dispatch]);
+
+
+  return (
+    <div className='flex w-screen h-[calc(100vh-3.5rem)]'>
+      <div className=' w-[20%] bg-richblack-800 h-full'>
+        <VideoDetailsSidebar setReviewModal={setReviewModal}></VideoDetailsSidebar>
+      </div>
+      <div className='w-[80%]'>
+        <Outlet></Outlet>
+      </div>
+      {
+        reviewModal && (<ReviewModal setReviewModal={setReviewModal}></ReviewModal>)
+      }
+    </div>
+  )
+}
+
+export default ViewCourse

@@ -1,9 +1,9 @@
 import { courseEndpoints,ratingsEndpoints } from "../apis";
-import { apiConnector } from "../apiconnector";
+import { apiConnector } from "../apiConnector";
 import { setCourse, updateCourseInList } from "../../slices/courseSlice";
 import toast from "react-hot-toast";
 // import  from "../apis";
-const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API,DELETE_SUBSECTION_API,COURSE_DETAILS_API}=courseEndpoints;
+const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API,DELETE_SUBSECTION_API,COURSE_DETAILS_API,CREATE_RATING_API}=courseEndpoints;
 const {GET_AVG_RATING}=ratingsEndpoints;
 
 export const fetchCourseCategories = async() =>{
@@ -76,8 +76,8 @@ export const getCourseDetails = async(courseId,token,navigate,dispatch) =>{
         if(!response.data.success){
             throw new Error("Could not fetch the course details");
         }   
-        console.log("REsponse of the courseDetails :",response.data.courseDetails);
-        return response.data.courseDetails;
+        console.log("REsponse of the courseDetails :",response.data);
+        return response.data;
     } catch(error){
         console.log("ERror in the course detials fetching :",error);
     }
@@ -212,4 +212,24 @@ export const getAverageRating = async(courseId) =>{
     } catch(error){
         console.log("Error in fetching the average rating",error);
     }
-}
+};
+
+export const createRatingAndReview = async (data,token) =>{
+    try{
+
+        const response = await apiConnector("POST",CREATE_RATING_API,data,{
+            Authorization:`Bearer ${token}`
+        });
+        if(!response.data.success){
+            throw new Error("error in the rating and review");
+        }
+        return response;
+    } catch(error){
+        if (error.response && error.response.status === 401) {
+      toast.error("Already Rated");
+    } else {
+      toast.error("Something went wrong while creating rating");
+    }
+        console.log("Error in creating rating and review :",error);
+    }
+};

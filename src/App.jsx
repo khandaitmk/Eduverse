@@ -10,7 +10,6 @@ import SignupPage from './pages/SignupPage';
 import Navbar from './components/common/Navbar';
 import VerifyEmail from './components/core/auth/VerifyEmail';
 import ForgotPassword from './components/core/auth/ForgotPassword';
-import ResetPassword from './components/core/auth/UpdatePassword';
 import UpdatePassword from './components/core/auth/UpdatePassword';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
@@ -26,6 +25,9 @@ import MyCourses from './components/core/Dashboard/MyCourses/MyCourses';
 import Catalog from './pages/Catalog';
 import CourseDetailsPage from './pages/CourseDetails';
 import Loader from './components/common/Loader';
+import ViewCourse from './pages/ViewCourse';
+import VideoDetails from './components/core/Dashboard/View-Course/VideoDetails';
+
 function App() {
   const [isLogedIn,setIsLogedIn]=useState(false);
   const {user}=useSelector((state)=>(state.profile));
@@ -43,11 +45,12 @@ function App() {
         <Route path="/signup" element={<SignupPage isLogedIn={isLogedIn} setIsLogedIn={setIsLogedIn} />} />
         <Route path="/verify-email" element={<VerifyEmail></VerifyEmail>} />
         <Route path="/forgot-password" element={<ForgotPassword></ForgotPassword>} />
-        <Route path="/reset-password" element={<ResetPassword></ResetPassword>} />
         <Route path="/update-password/:token" element={<UpdatePassword></UpdatePassword>} />
         <Route path="/about" element={<AboutPage></AboutPage>} />
         <Route path="/contact" element={<ContactPage></ContactPage>} />
         <Route path="/courses/:courseId" element={<CourseDetailsPage></CourseDetailsPage>} />
+        
+        
 
         <Route element={<PrivateRoute><Dashboard></Dashboard></PrivateRoute>}>
         {/* Common routes for all users */}
@@ -79,8 +82,20 @@ function App() {
             <Route path="dashboard/admin-panel" element={<AdminPannel />} />
           </>
         )} */}
-
+          
         </Route>
+
+        {/* Routes that don’t need dashboard sidebar */}
+        {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+          <Route path="/dashboard/enrolled-courses/view-course/:courseId" element={
+            <PrivateRoute>
+              <ViewCourse />
+            </PrivateRoute>
+          }>
+            <Route path="section/:sectionId/sub-section/:subSectionId" element={<VideoDetails />} />
+          </Route>
+        )}
+
 
       </Routes>
     </div>

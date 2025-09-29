@@ -4,7 +4,7 @@ import { useState } from 'react';
 function CatalogCard({course}) {
     const [avgReviewCount,setAvgReviewCount]=useState(0);
   return (
-    <div className='h-[300px] bg-richblack-800 border border-richblack-700 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 ease-in-out'>
+    <div className='h-[330px] bg-richblack-800 border border-richblack-700 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300 ease-in-out'>
                 <Link to={`/courses/${course._id}`}>
             <div>
                 <div className='h-[220px] p-3'>

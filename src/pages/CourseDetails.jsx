@@ -48,7 +48,7 @@ function CourseDetailsPage() {
     const getCDetails = async()=>{
         dispatch(setLoading(true));
         const result = await getCourseDetails(courseId,token,navigate,dispatch);
-        setCourseDetails(result);
+        setCourseDetails(result.courseDetails);
         dispatch(setLoading(false));
     };
     const handleAddToCart = () =>{
@@ -74,7 +74,7 @@ function CourseDetailsPage() {
     <div className=''>
         {/* section -1 */}
         <div className='bg-richblack-800 relative'>
-            <div className='w-11/12 mx-auto p-20 text-white text-xl flex flex-col gap-4'>
+            <div className='w-[68%] p-20 text-white text-xl flex flex-col gap-4 '>
                 <h1 className='text-5xl text-white font-bold'>{courseDetails?.courseName}</h1>
                 <p className='text-richblack-500 text-xl'>{courseDetails?.courseDescription}</p>
                 <div className='flex items-center text-xl gap-5 text-white'>

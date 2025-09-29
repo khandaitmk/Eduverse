@@ -129,7 +129,10 @@ exports.getAllEnrolledCourses = async(req,res) =>{
         const isUser = await User.findById(userId).populate({
             path:"courses",
             populate :{
-                path:"courseContent"
+                path:"courseContent",
+                populate:{
+                    path:"subSection"
+                }
             }
         })
         .populate("courseProgress")

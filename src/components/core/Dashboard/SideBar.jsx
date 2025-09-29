@@ -13,6 +13,7 @@ function SideBar() {
     const {loading:authLoading}=useSelector((state)=>(state.auth));
     const dispatch=useDispatch();
     const navigate=useNavigate();
+    const [confirmationModel,setConfirmationModel]=useState(null);
 
     if(authLoading || profileLoading){
         return(
@@ -21,8 +22,6 @@ function SideBar() {
             </div>
         )
     }
-
-    const [confirmationModel,setConfirmationModel]=useState(null);
 
   return (
     <div className={` h-[calc(100vh-3.5rem)] bg-richblack-800 w-[14%] text-richblack-300 overflow-hidden sticky top-0 flex flex-col gap-5`}>

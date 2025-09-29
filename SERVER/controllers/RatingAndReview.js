@@ -9,8 +9,9 @@ exports.createRatingAndReview= async (req,res) =>{
     try{
         const {courseId,rating,review}=req.body;
         const userId=req.user.id;
+        console.log(" dataaaaaa**** :",userId);
         // check if user is enrolled or not
-        const courseDetails=await Course.findOne({_id:courseId});
+        const courseDetails=await Course.findOne({_id:courseId}).populate("ratingAndReviwes").exec();
         const isIncludes=courseDetails.studentsEnrolled.some(
             id => id.equals(userId)//here id is the element of the array studentEnrolled
         );
@@ -22,12 +23,12 @@ exports.createRatingAndReview= async (req,res) =>{
         }
         // check if that user already reviewed or not
         const isRated=courseDetails.ratingAndReviwes.some(
-            id => id.equals(userId)//here id is the element of the array studentEnrolled
+            obj => obj.user.equals(userId)//here id is the element of the array studentEnrolled
         );
         if(isRated){
-            return res.status.json({
+            return res.status(401).json({
                 success:false,
-                message:"student already enrolled and now you are not allowed to RAR"
+                message:"student already rated and now you are not allowed to RAR"
             });
         }
         // create rating
@@ -37,7 +38,7 @@ exports.createRatingAndReview= async (req,res) =>{
         // return response
         return res.status(200).json({
             success:true,
-            message:"ratin and review is successfull",
+            message:"rating and review is successfull",
             data:newRating
         });
 
@@ -46,7 +47,8 @@ exports.createRatingAndReview= async (req,res) =>{
         console.log("ERror :",error);
         return res.status(500).json({
             success:false,
-            messag:"failed to submit the rating and reviwe "
+            message:"failed to submit the rating and reviwe ",
+            error:error.message
         });
     }
 };
