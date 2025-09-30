@@ -123,10 +123,10 @@ exports.editCourse = async(req,res)=>{
                 });
             }
             // Update the course with the new thumbnail URL
-            console.log("New thumbnail URL:", thumbnailImage.secure_url);
+            // console.log("New thumbnail URL:", thumbnailImage.secure_url);
             course.thumbnail = thumbnailImage.secure_url;
             await course.save();
-            console.log("Course thumbnail updated successfully");
+            // console.log("Course thumbnail updated successfully");
          }
 
          const updatedCourse = await Course.findOne({
@@ -188,7 +188,7 @@ exports.getCourseDetails= async (req,res) =>{
     try{
         // fetch course id
         const {courseId}=req.params;
-        console.log("course Id:",courseId);
+        // console.log("course Id:",courseId);
         // find out course details
         const courseDetails=await Course.findById(courseId)
                                     .populate(
@@ -211,7 +211,7 @@ exports.getCourseDetails= async (req,res) =>{
                                         }
                                     )
                                     .exec();
-            console.log("course details :",courseDetails);
+            // console.log("course details :",courseDetails);
         // validation
         if(!courseDetails){
             return res.status(400).json({
@@ -220,8 +220,10 @@ exports.getCourseDetails= async (req,res) =>{
             });
         }
 
-        let courseProgressCount =  await CourseProgress.findOne({courseId:courseId});
-        console.log("Course Progress :",courseProgressCount);
+        // progress should be fetched for the current user
+        const userId = req.user?.id;
+        const courseProgressDoc = await CourseProgress.findOne({ userId: userId, courseId: courseId });
+        const courseProgressCount = courseProgressDoc || null;
 
 
         let totalTimeDuration = 0;
@@ -284,4 +286,59 @@ exports.getAllInstructorCourses = async (req,res) =>{
         error:error.message
     });
   } 
+};
+
+exports.markLectureAsCompleted = async (req,res) =>{
+    try{
+        const {courseId,subSectionId}= req.body;
+        const userId = req.user.id;
+        if(!courseId || !subSectionId || !userId){
+            return res.status(404).json({
+                success:false,
+                message:"missing required details"
+            });
+        }
+         
+        let progressAlreadyExists = await CourseProgress.findOne({userId:userId,courseId:courseId});
+        if(!progressAlreadyExists){
+            progressAlreadyExists = await CourseProgress.create({userId,courseId,completedVideos:[]})
+        }
+        let completedVideos = progressAlreadyExists?.completedVideos;
+        console.log("Progress ----",progressAlreadyExists?.completedVideos);
+        let updateUser;
+        if(!completedVideos.includes(subSectionId)){
+            const progress = await CourseProgress.findByIdAndUpdate(
+                progressAlreadyExists._id,
+                {$push:{completedVideos:subSectionId}},
+                {new:true}
+            );
+
+            updateUser = await User.findByIdAndUpdate(
+                userId,
+                {$addToSet:{courseProgress:progress._id}},
+                {new:true}
+            ).populate("courseProgress").exec();
+
+        } else{
+            return res.status(400).json({
+                success:false,
+                message:"Lectured already marked as completed"
+            })
+        }
+        const updatedCourse = await Course.findById(courseId).populate("courseContent").exec();
+        console.log("updated Course :***",updatedCourse);
+        return res.status(200).json({
+            success:true,
+            message:"Lecture marked as completed",
+            user:updateUser,
+            updatedCourse,
+            subSectionId
+        });
+    } catch(error){
+        return res.status(500).json({
+            success:false,
+            message:"Error in the completion of lecture",
+            error:error.message
+        });
+    }
 }

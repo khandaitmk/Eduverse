@@ -9,6 +9,7 @@ import { setCompletedLectures, setCourseSectionData, setEntireCourseData, setTot
 function ViewCourse() {
   const [reviewModal,setReviewModal] = useState(false);
   const {courseId}=useParams();
+  const {courseEntireData} = useSelector((state)=>state.viewCourse);
   const {token} = useSelector((state)=>state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,7 +19,12 @@ function ViewCourse() {
       console.log("Course details in the View-course Section :",courseData);
       dispatch(setCourseSectionData(courseData.courseDetails.courseContent));
       dispatch(setEntireCourseData(courseData.courseDetails));
-      dispatch(setCompletedLectures(courseData.completedVideos));
+      const completed = Array.isArray(courseData?.completedVideos)
+        ? courseData.completedVideos
+        : courseData?.completedVideos
+          ? [courseData.completedVideos]
+          : [];
+      dispatch(setCompletedLectures(completed));
       var lecture = 0;
       courseData?.courseDetails?.courseContent?.forEach((section)=>{
         lecture += section?.subSection?.length;

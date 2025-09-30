@@ -16,7 +16,7 @@ function VideoDetailsSidebar(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const [showSidebar,setShowSidebar] = useState(false);
-
+  const  [courseCompletedLectures,setCourseCompletedLectures]=useState([]);
   useEffect(()=>{
     ;(()=>{
         if(!courseSectionData){
@@ -27,9 +27,24 @@ function VideoDetailsSidebar(props) {
         const activeSubSectionId = courseSectionData?.[currentSectionIndex]?.subSection?.[currentSubSectionIndex]?._id;
         setActiveStatus(courseSectionData?.[currentSectionIndex]?._id);
         setVideoBarActive(activeSubSectionId);
-    })() // this is the another method to call the function
+        const allSubSectionIds = courseSectionData.flatMap((section) =>
+        section.subSection.map((sub) => sub._id)
+        );
+        console.log("Completed Lectures :",completedLectures);
+         const safeCompleted = Array.isArray(completedLectures)
+          ? completedLectures
+          : completedLectures
+            ? [completedLectures]
+            : [];
+         const thisCourseCompleted = safeCompleted.filter((id) =>
+          allSubSectionIds.includes(id)
+        );    
+        setCourseCompletedLectures(thisCourseCompleted);
+            // console.log("Completed lectures for this course:", thisCourseCompleted.length);
 
-  },[location.pathname,courseSectionData,courseEntireData]);
+      })() // this is the another method to call the function
+
+  },[location.pathname,courseSectionData,completedLectures]);
 
   return (
     <div className=' py-5 px-5 text-sm'>
@@ -48,7 +63,7 @@ function VideoDetailsSidebar(props) {
           {/* for headings */}
           <div className=' flex flex-col'>
             <p className=' text-richblack-5 font-bold text-lg'>{courseEntireData.courseName}</p>
-            <p className=' text-richblack-500'>{completedLectures?.length} / {totalNoOfLectures}</p>
+            <p className=' text-richblack-500'>{courseCompletedLectures?.length} / {totalNoOfLectures}</p>
           </div>
         </div>
 
@@ -70,7 +85,7 @@ function VideoDetailsSidebar(props) {
                        navigate(`/dashboard/enrolled-courses/view-course/${courseId}/section/${section._id}/sub-section/${subSection._id}`)
                       } 
                         } key={index}  className={` px-6  text-richblack-25 bg-richblack-800 font-semibold flex gap-1 ${videoBarActive === subSection?._id && (" bg-yellow-100 text-richblack-900 ") }`}>
-                        <input type="checkbox" className=' w-[17px]' readOnly checked={completedLectures?.includes(subSection._id)} name="markAsCompleted" id="markAsCompleted" />
+                        <input defaultValue={false} type="checkbox" className=' w-[17px]' readOnly checked={Array.isArray(completedLectures) ? completedLectures.includes(subSection._id) : false} name="markAsCompleted" id="markAsCompleted" />
                         <span>{subSection?.title}</span>
                       </div>
                     ))

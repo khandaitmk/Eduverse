@@ -2,8 +2,10 @@ import { courseEndpoints,ratingsEndpoints } from "../apis";
 import { apiConnector } from "../apiConnector";
 import { setCourse, updateCourseInList } from "../../slices/courseSlice";
 import toast from "react-hot-toast";
+import { setUser } from "../../slices/profileSlice";
+import { setCompletedLectures, setEntireCourseData, updateCompletedLectures } from "../../slices/viewCourseSlice";
 // import  from "../apis";
-const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API,DELETE_SUBSECTION_API,COURSE_DETAILS_API,CREATE_RATING_API}=courseEndpoints;
+const {COURSE_CATEGORIES_API,EDIT_COURSE_API,CREATE_COURSE_API,CREATE_SECTION_API,UPDATE_SECTION_API,DELETE_SECTION_API,CREATE_SUBSECTION_API,GET_ALL_INSTRUCTOR_COURSES_API,DELETE_SUBSECTION_API,COURSE_DETAILS_API,CREATE_RATING_API,LECTURE_COMPLETION_API}=courseEndpoints;
 const {GET_AVG_RATING}=ratingsEndpoints;
 
 export const fetchCourseCategories = async() =>{
@@ -72,7 +74,9 @@ export const addCourseDetails = async (data,token) =>{
 export const getCourseDetails = async(courseId,token,navigate,dispatch) =>{
     try{
         console.log("course id: ",courseId);
-        const response = await apiConnector("GET",`${COURSE_DETAILS_API}/${courseId}`);
+        const response = await apiConnector("GET",`${COURSE_DETAILS_API}/${courseId}`, null, {
+            Authorization: `Bearer ${token}`,
+        });
         if(!response.data.success){
             throw new Error("Could not fetch the course details");
         }   
@@ -203,7 +207,7 @@ export async function getAllInstructorCourses(token){
 
 export const getAverageRating = async(courseId) =>{
     try{
-        const response = await apiConnector("GET",GET_AVG_RATING,{courseId:courseId});
+        const response = await apiConnector("GET",GET_AVG_RATING);
         if(!response.data.success){
             throw new Error("Could not fetch the average rating");
         }
@@ -233,3 +237,27 @@ export const createRatingAndReview = async (data,token) =>{
         console.log("Error in creating rating and review :",error);
     }
 };
+export const markLectureAsCompleted = async (data,token,dispatch) =>{
+    try{
+        const response = await apiConnector("POST",LECTURE_COMPLETION_API,data,{
+            Authorization:`Bearer ${token}`
+        });
+
+        if(!response.data.success){
+            throw new Error("Error in the marking the lecture as completed");
+        }
+         console.log("after mrking as completed :",response.data.user);
+         dispatch(setEntireCourseData(response.data.updatedCourse));
+         // Append the newly completed subsection ID to the list
+         if (response.data?.subSectionId) {
+           dispatch(updateCompletedLectures(response.data.subSectionId));
+         }
+         toast.success("Marked as Completed");
+
+    } catch(error){
+        console.log("Error in the markin the lecture as completed :",error);
+        if(error.status === 400){
+            toast.error("Already Marked as Completed");
+        }
+    }
+}

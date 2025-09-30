@@ -23,8 +23,8 @@ function EnrolledCourse() {
       // API returns { success, message, data: isUser }
       const userData = response; // response is already response.data from API
       const courses = userData?.data?.courses || [];
-      const courseProgress = userData?.data?.courseProgress || [];
-      console.log("Enrolled courses :", courses);
+      const courseProgress = userData?.data?.courseProgress;
+      console.log("Enrolled courses :", userData);
       setEnrolledCourses(courses);
       setProgressData(courseProgress);
       dispatch(setLoading(false));
@@ -100,7 +100,7 @@ function EnrolledCourse() {
                     totalNoOfLectures(course) > 0
                       ? (courseProgress?.completedVideos?.length / totalNoOfLectures(course)) * 100
                       : 0;
-
+                  // console.log("Completed percentage :",course);
                   return (
                     <Tr onClick={()=>handleNavigate(course)}
                      key={index} className='border-b border-richblack-500'>
@@ -121,8 +121,8 @@ function EnrolledCourse() {
 
                       <Td onClick={()=>handleNavigate(course)}>
                         {courseProgress ? (
-                          <div>
-                            <p>Completed</p>
+                          <div className=' flex flex-col text-yellow-100'>
+                            <p>{completedPercentage}% Completed</p>
                             <ProgressBar
                               completed={completedPercentage}
                               height='8px'

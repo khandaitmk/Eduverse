@@ -135,7 +135,14 @@ exports.getAllEnrolledCourses = async(req,res) =>{
                 }
             }
         })
-        .populate("courseProgress")
+        .populate(
+            {
+                path:"courseProgress",
+                populate:{
+                    path:"completedVideos"
+                }
+            }
+        )
         .exec();
         if(!isUser){
             return res.status(400).json({

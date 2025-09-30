@@ -64,7 +64,7 @@ function CourseDetailsPage() {
             if(token){
                 console.log(courses);
                 console.log("user email :",user?.email);
-                const result = await payment({courses,userEmail:user?.email},token,dispatch);
+                const result = await payment({courses,userEmail:user?.email,userId:user?._id},token,dispatch);
             }
             else{
                 navigate("/login");
