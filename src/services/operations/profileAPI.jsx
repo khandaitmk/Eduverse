@@ -1,6 +1,6 @@
     import React from 'react'
     import { apiConnector } from '../apiConnector';
-    import { profileEndpoints, settingsEndpoints } from '../apis'
+    import { profileEndpoints, settingsEndpoints,contactusEndpoint } from '../apis'
     import { setUser } from '../../slices/profileSlice';
     import { setLoading } from '../../slices/authSlice';
     import {toast} from "react-hot-toast";
@@ -118,20 +118,35 @@
         
         let result=[];
         try{
-            console.log("token :",token);
+            // console.log("token :",token);
             const response = await apiConnector("GET",profileEndpoints.GET_USER_ENROLLED_COURSES_API,null,{
                 Authorization:`Bearer ${token}`
             });
-            console.log("result :",response);
+            // console.log("result :",response);
 
             if(!response.data.success){
                 throw new Error("Failed to get the enrolled courses");
             }
-            console.log("enrolled data :",response.data);
+            // console.log("enrolled data :",response.data);
             result=response.data;
 
         } catch(error){
             console.log("ERROR in fetching the enrolled courses :",error);
         }
         return result;
+    };
+
+    export const contactUS = async(data,token) =>{
+        try{
+            const response = await apiConnector("POST",contactusEndpoint.CONTACT_US_API,data,{
+                Authorization:`Bearer ${token}`
+            });
+            if(!response.data.success){
+                throw new Error("Error in the Contactus form");
+            }
+            console.log("response after contact us Form :",response);
+            return response;
+        } catch(error){
+            console.log("Error in the contact us Form filling :",error);
+        }
     }

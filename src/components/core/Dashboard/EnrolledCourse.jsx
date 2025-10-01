@@ -9,7 +9,7 @@ import { setLoading } from '../../../slices/authSlice';
 // import { setLoading } from '../../../slices/authSlice';
 
 function EnrolledCourse() {
-  console.log("✅ EnrolledCourse component rendered");
+  // console.log("✅ EnrolledCourse component rendered");
   const { token } = useSelector((state) => state.auth);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [progressData, setProgressData] = useState([]);
@@ -24,7 +24,7 @@ function EnrolledCourse() {
       const userData = response; // response is already response.data from API
       const courses = userData?.data?.courses || [];
       const courseProgress = userData?.data?.courseProgress;
-      console.log("Enrolled courses :", userData);
+      // console.log("Enrolled courses :", userData);
       setEnrolledCourses(courses);
       setProgressData(courseProgress);
       dispatch(setLoading(false));

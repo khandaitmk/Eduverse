@@ -50,7 +50,7 @@ function CourseList(props) {
                                 <td className=' p-8 '>
                                     <div className='flex gap-5'>
                                         <div>
-                                            <div><img className=' rounded-md w-50' src={item.thumbnail} alt="" /></div>
+                                            <div className='w-50'><img className=' rounded-md w-50' src={item.thumbnail} alt="" /></div>
                                         </div>
                                         <div className='flex flex-col justify-between'>
                                             <p className=' text-white text-lg font-semibold'>{item.courseName}</p>
@@ -70,14 +70,15 @@ function CourseList(props) {
                                     </div>
                                 </td>
                                 <td className='text-center'>
-                                    {
+                                    {/* {
                                         item.courseContent.map((i)=>{
                                             return(
                                                 i.subSection.map((k)=>{
                                                 return(<div>{k.timeDuration}</div>)
                                             })
                                             )})
-                                    }
+                                    } */}
+                                    baki hai
                                 </td>
                                 <td className='text-center'>
                                     <p>{item.price}</p>

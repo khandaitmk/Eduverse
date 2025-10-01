@@ -3,9 +3,12 @@ import { useForm } from 'react-hook-form';
 import Loader from './Loader'
 import countryCode from '../../data/countrycodes.json'
 import { useEffect } from 'react';
+import { contactUS } from '../../services/operations/profileAPI';
+import { useSelector } from 'react-redux';
 function ContactForm() {
     const [loading,setLoading]=useState(false);
     const {register,handleSubmit,reset,formState:{errors,isSubmitSuccessful}}=useForm();
+    const {token} = useSelector((state)=>state.auth);
 
     useEffect(()=>{
         if(isSubmitSuccessful){
@@ -20,8 +23,14 @@ function ContactForm() {
     },[reset,isSubmitSuccessful]);
 
     const onSubmit = async (data)=>{
-        console.log(data);
-        // API call for the contact us
+        
+        await contactUS({
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phoneNo: `${data.countryCode}${data.contact}`,
+            message: data.message,
+        },token);
     }
   return (
    loading?(<Loader></Loader>):(
@@ -69,7 +78,7 @@ function ContactForm() {
                                 })
                             }
                             </select>   
-                            <input className='w-[65%] bg-richblack-700 rounded-md p-3 border-b-2 border-richblack-300' type="tel" name="conatact" id="contact" placeholder='Enter your contact number' {...register("contact",{required:true},{maxLength:{value:10,message:"Please Enter Valid Contact Number"}})} />
+                            <input className='w-[65%] bg-richblack-700 rounded-md p-3 border-b-2 border-richblack-300' type="tel" name="contact" id="contact" placeholder='Enter your contact number' {...register("contact",{required:true,maxLength:{value:10,message:"Please Enter Valid Contact Number"}})} />
                         </div>
                     </div>
                     

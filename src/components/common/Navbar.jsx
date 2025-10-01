@@ -24,13 +24,13 @@ const Navbar = () => {
                 const res= await apiConnector("GET",categories.CATEGORIES_API);
                 // console.log("Printing the res :",res);
                 setSubLinks(res.data.data)
-                console.log("data",setSubLinks(res.data.data))
+                // console.log("data",setSubLinks(res.data.data))
                 
             } catch(error){
                 console.log("ERROR Could not fetch category List :",error);
             }
         };
-        console.log(subLinks[0]);
+        // console.log(subLinks[0]);
     useEffect(()=>{
         fetchSubLinks();
     },[])

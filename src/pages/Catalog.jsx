@@ -3,10 +3,11 @@ import { getCatalogPageDetails } from '../services/operations/pageAndComponentDe
 import { useParams } from 'react-router-dom';
 import { fetchCourseCategories } from '../services/operations/courseDetailsAPI';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Footer from '../components/core/Homepage/Footer';
 import CourseSlider from '../components/core/Catalog/CourseSlider';
 import { CgUnavailable } from "react-icons/cg";
+import { setLoading } from '../slices/authSlice';
 
 function Catalog() {
   const {catalogName}=useParams();
@@ -14,6 +15,7 @@ function Catalog() {
   const [desc,setDesc]=useState("");
   const [catalogPageData,setCatalogPageData]=useState(null);
   const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const fetchSubLinks = async()=>{
     try{
       const result = await fetchCourseCategories();
@@ -35,6 +37,7 @@ function Catalog() {
         
 
     const fetchCatalogDetails = async() =>{
+      dispatch(setLoading(true));
       if(!categoryId){
         return;
       }
@@ -43,7 +46,10 @@ function Catalog() {
 
       console.log("result of catalog details :",result);
       setCatalogPageData(result);
+      dispatch(setLoading(false));
+
     };
+
     fetchCatalogDetails();
   },[categoryId]);
 

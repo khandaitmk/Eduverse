@@ -30,13 +30,14 @@ function CourseDetailsPage() {
 
     useEffect(()=>{
         if(courseDetails){
-            const enrolled = courseDetails.studentsEnrolled.find((student) => student._id === user?._id);
+            const enrolled = courseDetails?.studentsEnrolled.find((student) => student === user?._id);
             if(enrolled){
                 setEnrolled(true);
             }
         }
     },[courseDetails,user?._id]);
 
+    console.log("Enrolled :",courseDetails?.studentsEnrolled.find((student) => student === user?._id));
     const getRating = async()=>{
         dispatch(setLoading(true));
         const result = await getAverageRating(courseId);

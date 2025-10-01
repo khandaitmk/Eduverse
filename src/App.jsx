@@ -32,7 +32,7 @@ function App() {
   const [isLogedIn,setIsLogedIn]=useState(false);
   const {user}=useSelector((state)=>(state.profile));
   const {loading}=useSelector((state)=>(state.auth));
-  console.log("User in App.jsx", user);
+  // console.log("User in App.jsx", user);
   return (
     <div className=" w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar></Navbar>

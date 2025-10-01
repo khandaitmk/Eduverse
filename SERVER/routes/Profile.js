@@ -10,5 +10,4 @@ Router.post("/changeProfileImage",auth,changeProfileImage);
 // get enrolled courses
 Router.get("/getEnrolledCourses",auth,getAllEnrolledCourses);
 
-
 module.exports=Router;  
