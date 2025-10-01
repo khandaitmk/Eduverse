@@ -100,7 +100,7 @@ export function logOut(navigate){
         localStorage.removeItem("user");
         toast.success("Loged out successfully")
         navigate("/")
-
+        
     }
 };
 
