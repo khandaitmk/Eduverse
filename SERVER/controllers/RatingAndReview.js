@@ -55,8 +55,9 @@ exports.createRatingAndReview= async (req,res) =>{
 // get average rating
 exports.averageRating =async (req,res) =>{
     try{
-        const courseId=req.body;
-        console.log("courseId in average rating backend",courseId);
+                // console.log("courseId in average rating backend",req.query.courseId);
+
+        const courseId=req.query.courseId;
         // calculate course rating
 
         // here we used agregate because it allows us to perform step by step operations on the data that is first matches all courses and then  group all the ratings and then calculate the average rating

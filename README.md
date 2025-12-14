@@ -1,12 +1,53 @@
-# React + Vite
+# EduVerse – Full Stack Ed-Tech Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack Ed-Tech web application with role-based authentication,
+course management, and Stripe payments.
 
-Currently, two official plugins are available:
+## Introduction
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+EduVerse is a full-stack Ed-Tech platform that allows instructors
+to create and publish courses while students can browse, purchase,
+and watch courses securely. The application focuses on real-world
+authentication, authorization, payment handling, and protected
+content delivery.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- OTP-based authentication (Signup / Login)
+- Role-based access (Student / Instructor)
+- Protected routes and APIs
+- Course creation and management
+- Stripe payment integration
+- Secure access to purchased content
+
+## Tech Stack
+
+### Frontend
+- React
+- Vite
+- Redux Toolkit
+- Tailwind CSS
+- Stripe JS
+
+### Backend
+- Node.js
+- Express.js
+- MongoDB
+- Stripe API
+
+## Project Structure
+
+eduverse/
+├── SERVER/        # Backend
+├── src/           # Frontend source code
+├── public/
+├── package.json
+└── vite.config.js
+
+## Future Enhancements
+
+- Add an Admin role to manage users and courses
+- Implement course reviews and ratings
+- Improve instructor analytics and earnings dashboard
+- Add wishlist and course bookmarking
+- Enhance UI/UX and mobile responsiveness

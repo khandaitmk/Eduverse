@@ -20,7 +20,7 @@ Router.post("/addSubSection",auth, isInstructor, createSubSection);
 Router.post("/updateSubSection",auth, isInstructor, updateSubSection);  
 Router.post("/deleteSubSection",auth, isInstructor, deleteSubSection);
 Router.get('/getAllCourses', getAllCourses);
-Router.get('/getCourseDetails/:courseId', auth, getCourseDetails);
+Router.get('/getCourseDetails/:courseId', getCourseDetails);
 Router.get("/getInstructorCourses", auth,isInstructor, getAllInstructorCourses);
 Router.post("/markLectureAsCompleted",auth, isStudent, markLectureAsCompleted);
 

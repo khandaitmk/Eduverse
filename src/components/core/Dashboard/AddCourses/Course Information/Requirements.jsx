@@ -16,6 +16,8 @@ function Requirements(props) {
             setRequirementList(newRequirementList);
             setValue(name,newRequirementList);
         }
+        setReq("");
+
     };
 
     function removeRequirement(index){

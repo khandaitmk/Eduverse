@@ -207,7 +207,9 @@ export async function getAllInstructorCourses(token){
 
 export const getAverageRating = async(courseId) =>{
     try{
-        const response = await apiConnector("GET",GET_AVG_RATING);
+        const response = await apiConnector("GET",GET_AVG_RATING,null,null,{courseId:courseId});
+                // console.log("courseId in get average rating api",{courseId:courseId});
+
         if(!response.data.success){
             throw new Error("Could not fetch the average rating");
         }

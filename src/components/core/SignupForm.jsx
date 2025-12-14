@@ -73,7 +73,7 @@ const SignupForm = (props) => {
 
                         <div className=' flex flex-col relative'>
                             <label htmlFor="password" >Confirm Password <span className=' text-red-600'>*</span></label>
-                            <input className=' bg-richblack-700 p-3 rounded-md' type={showpass?"text":"password"} name="cPassword" id="cPassword" placeholder='Confirm Password' required value={formData.cPassword} onChange={changeHandler}/>
+                            <input className=' bg-richblack-700 p-3 rounded-md' type={showcpass?"text":"password"} name="cPassword" id="cPassword" placeholder='Confirm Password' required value={formData.cPassword} onChange={changeHandler}/>
                             <div className='absolute right-4 bottom-4 cursor-pointer text-richblack-300' onClick={()=>{setShowcPass(!showcpass)}}>
                             {
                             showcpass?<FaEye></FaEye>:<FaEyeSlash></FaEyeSlash>

@@ -40,17 +40,19 @@ const LoginForm = (props) => {
                    <div className=' flex flex-col relative'>
                       <label htmlFor="password" >Password <span className=' text-red-600'>*</span></label>
                       <input className=' bg-richblack-700 p-3 rounded-md' type={showpass?"text":"password"} name="password" id="password" placeholder='Enter Password' required value={form.password} onChange={changeHandler}/>
-                      <div className='absolute right-4 bottom-8 cursor-pointer ' onClick={()=>{setShowPass(!showpass)}}>
+                      <div className='absolute right-4 bottom-10 cursor-pointer ' onClick={()=>{setShowPass(!showpass)}}>
                        {
                         showpass?<FaEye></FaEye>:<FaEyeSlash></FaEyeSlash>
                        } 
                       </div>
-                      <Link to={"/forgot-password"} className=' text-[12px] text-right text-blue-300 cursor-pointer'>Forgot Password</Link>
+                      <div className='text-right'>
+                        <Link to={"/forgot-password"} className='text-[12px] text-right text-blue-300 cursor-pointer'>Forgot Password</Link>
+                      </div>
                    </div>
 
 
                    <div>
-                    <button  className=' bg-yellow-200 w-full rounded-md p-2 text-richblack-900 text-lg cursor-pointer' type="submit">Log In</button>
+                    <button  className=' bg-yellow-100 w-full rounded-md p-2 text-richblack-900 text-lg cursor-pointer' type="submit">Log In</button>
                    </div>
                 </form>
     </div>

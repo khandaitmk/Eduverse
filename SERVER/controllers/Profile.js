@@ -152,6 +152,7 @@ exports.getAllEnrolledCourses = async(req,res) =>{
         }
 
         console.log(isUser);
+        console.log(isUser.courses);
         // const courses = isUser?.courses;
         // console.log(courses);
 
