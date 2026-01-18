@@ -40,7 +40,7 @@ const LoginForm = (props) => {
                    <div className=' flex flex-col relative gap-1 md:gap-2'>
                       <label htmlFor="password" className="text-sm md:text-base">Password <span className=' text-red-600'>*</span></label>
                       <input className=' bg-richblack-700 p-2 md:p-3 rounded-md text-sm md:text-base' type={showpass?"text":"password"} name="password" id="password" placeholder='Enter Password' required value={form.password} onChange={changeHandler}/>
-                      <div className='absolute right-3 md:right-4 bottom-8 md:bottom-10 cursor-pointer text-sm md:text-base' onClick={()=>{setShowPass(!showpass)}}>
+                      <div className='absolute right-3 md:right-4 bottom-8 md:bottom-12 cursor-pointer text-sm md:text-base' onClick={()=>{setShowPass(!showpass)}}>
                        {
                         showpass?<FaEye></FaEye>:<FaEyeSlash></FaEyeSlash>
                        } 
