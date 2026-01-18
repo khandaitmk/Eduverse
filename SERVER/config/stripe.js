@@ -47,7 +47,6 @@ exports.createCheckoutSession = async(req,res)=>{
             success_url: `http://localhost:3000/dashboard/enrolled-courses`,
             cancel_url: `http://localhost:3000/dashboard/enrolled-courses`,
             customer_email: userEmail,
-            invoice_creation: { enabled: true },
             metadata: { courses: JSON.stringify(courses), userId } // include userId for reliable enrollment
         });
 

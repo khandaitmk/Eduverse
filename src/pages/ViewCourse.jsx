@@ -39,11 +39,11 @@ function ViewCourse() {
 
 
   return (
-    <div className='flex w-screen h-[calc(100vh-3.5rem)]'>
-      <div className=' w-[20%] bg-richblack-800 h-full'>
+    <div className='flex flex-col lg:flex-row w-screen h-[calc(100vh-3.5rem)]'>
+      <div className=' w-full lg:w-[20%] bg-richblack-800 h-auto lg:h-full overflow-y-auto'>
         <VideoDetailsSidebar setReviewModal={setReviewModal}></VideoDetailsSidebar>
       </div>
-      <div className='w-[80%]'>
+      <div className='w-full lg:w-[80%] h-full overflow-y-auto'>
         <Outlet></Outlet>
       </div>
       {

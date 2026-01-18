@@ -25,7 +25,21 @@ function CourseSlider(props) {
                           onlyInViewport: true,
                       }
                  }
-            slidesPerView={4}       // Show 3 slides at a time
+            slidesPerView={1}       // Mobile: 1 slide
+            breakpoints={{
+                640: {
+                    slidesPerView: 2,  // Small screens: 2 slides
+                    spaceBetween: 10,
+                },
+                768: {
+                    slidesPerView: 3,  // Medium screens: 3 slides
+                    spaceBetween: 15,
+                },
+                1024: {
+                    slidesPerView: 4,  // Large screens: 4 slides
+                    spaceBetween: 20,
+                },
+            }}
             spaceBetween={5}       // Space between slides in px
             loop={true}             // Enable continuous loop
             autoplay={{

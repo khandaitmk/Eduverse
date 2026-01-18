@@ -23,13 +23,13 @@ function RenderTotalAmount() {
         }
     }
   return (
-    <div className=' bg-richblack-800 rounded-md w-[35%] h-fit overflow-hidden border border-richblack-600 sticky top-0'>
-        <div className=' w-full p-10 flex flex-col gap-5'>
-            <p className=' flex flex-col gap-3'>
-                <span className='text-richblack-500'>Total :</span>
-                <span className=' text-yellow-50 text-3xl flex font-semibold gap-0.5 items-center'><PiCurrencyInrBold></PiCurrencyInrBold> {total}</span>
+    <div className=' bg-richblack-800 rounded-md w-full lg:w-[35%] h-fit overflow-hidden border border-richblack-600 lg:sticky lg:top-0'>
+        <div className=' w-full p-6 md:p-8 lg:p-10 flex flex-col gap-4 md:gap-5'>
+            <p className=' flex flex-col gap-2 md:gap-3'>
+                <span className='text-richblack-500 text-sm md:text-base'>Total :</span>
+                <span className=' text-yellow-50 text-2xl md:text-3xl flex font-semibold gap-0.5 items-center'><PiCurrencyInrBold></PiCurrencyInrBold> {total}</span>
             </p>
-            <button className=' w-full p-2 bg-yellow-100 text-richblack-900 font-semibold rounded-md cursor-pointer' onClick={handleBuyCourses}>
+            <button className=' w-full p-2.5 md:p-2 bg-yellow-100 text-richblack-900 font-semibold rounded-md cursor-pointer text-sm md:text-base hover:bg-yellow-200 transition-colors' onClick={handleBuyCourses}>
                 Buy Now
             </button>
         </div>

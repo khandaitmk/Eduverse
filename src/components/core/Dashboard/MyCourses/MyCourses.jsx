@@ -31,24 +31,24 @@ function MyCourses() {
     }
   }, [location.pathname]);
   return (
-    <div className='text-white w-[85%] mx-auto p-10'>
-      <div className=' flex flex-col gap-10'>
-        <div className=' flex justify-between'>
-          <p className='text-3xl font-semibold'>My Courses</p>
-          <div className='flex gap-2'>
+    <div className='text-white w-full lg:w-[85%] mx-auto p-4 md:p-6 lg:p-10'>
+      <div className=' flex flex-col gap-6 md:gap-8 lg:gap-10'>
+        <div className=' flex flex-col sm:flex-row justify-between gap-4'>
+          <p className='text-2xl md:text-3xl font-semibold'>My Courses</p>
+          <div className='flex flex-col sm:flex-row gap-2'>
             <button 
               onClick={fetchInstructorCourses}
-              className=' flex items-center gap-1 p-2 px-4 bg-richblack-800 rounded-md text-richblack-100 font-semibold hover:bg-richblack-700 transition-colors'
+              className=' flex items-center justify-center gap-1 p-2 px-3 md:px-4 bg-richblack-800 rounded-md text-richblack-100 font-semibold hover:bg-richblack-700 transition-colors text-sm md:text-base'
             >
-              <MdRefresh size={20}></MdRefresh>
+              <MdRefresh size={18} className="md:w-5 md:h-5"></MdRefresh>
               <p>Refresh</p>
             </button>
             <button onClick={()=>
               {dispatch(setEditCourse(false))
               dispatch(setStep(1));
-              navigate("/dashboard/add-course")}} className=' flex items-center gap-1 p-2 px-4 bg-yellow-50 rounded-md text-richblack-900 font-semibold'>
+              navigate("/dashboard/add-course")}} className=' flex items-center justify-center gap-1 p-2 px-3 md:px-4 bg-yellow-50 rounded-md text-richblack-900 font-semibold text-sm md:text-base hover:bg-yellow-100 transition-colors'>
               <p>Add Course </p>
-              <IoMdAdd></IoMdAdd>
+              <IoMdAdd className="text-lg md:text-xl"></IoMdAdd>
             </button>
           </div>
         </div>

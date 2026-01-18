@@ -1,44 +1,71 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { getAllEnrolledCourses } from '../../../services/operations/profileAPI';
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-import { setLoading } from '../../../slices/authSlice';
-// import { setLoading } from '../../../slices/authSlice';
+import Loader from '../../common/Loader';
 
 function EnrolledCourse() {
   // console.log("✅ EnrolledCourse component rendered");
   const { token } = useSelector((state) => state.auth);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [progressData, setProgressData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const getEnrolledCoursesData = async () => {
     try{
-      dispatch(setLoading(true));
-      const response = await getAllEnrolledCourses(token, dispatch);
+      setLoading(true);
+      const response = await getAllEnrolledCourses(token);
       // API returns { success, message, data: isUser }
+      console.log("Full API response:", response);
+      console.log("Response type:", typeof response);
+      console.log("Response keys:", Object.keys(response || {}));
+      
       const userData = response; // response is already response.data from API
-      const courses = userData?.data?.courses || [];
-      const courseProgress = userData?.data?.courseProgress;
-      // console.log("Enrolled courses :", userData);
+      console.log("User data:", userData);
+      console.log("User data.data:", userData?.data);
+      console.log("User data.data type:", typeof userData?.data);
+      console.log("User data.data keys:", Object.keys(userData?.data || {}));
+      
+      // Check if courses exists and what type it is
+      console.log("Courses raw:", userData?.data?.courses);
+      console.log("Courses type:", Array.isArray(userData?.data?.courses) ? "Array" : typeof userData?.data?.courses);
+      console.log("Courses length:", userData?.data?.courses?.length);
+      
+      console.log("Course Progress:", userData?.data?.courseProgress);
+      
+      const courses = Array.isArray(userData?.data?.courses) 
+        ? userData.data.courses 
+        : (userData?.data?.courses ? [userData.data.courses] : []);
+      
+      const courseProgress = Array.isArray(userData?.data?.courseProgress) 
+        ? userData.data.courseProgress 
+        : (userData?.data?.courseProgress ? [userData.data.courseProgress] : []);
+      
+      console.log("Final courses array:", courses);
+      console.log("Final courses length:", courses.length);
+      console.log("Final progress array:", courseProgress);
+      
       setEnrolledCourses(courses);
       setProgressData(courseProgress);
-      dispatch(setLoading(false));
+      setLoading(false);
 
     } catch(error){
-      console.log("error in enrolled courses :",error);
+      console.error("error in enrolled courses :", error);
+      console.error("Error details:", error.message, error.stack);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    
-    getEnrolledCoursesData();
-    
-  }, []);
+    if (token) {
+      getEnrolledCoursesData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
   function totalNoOfLectures(course) {
     let total = 0;
@@ -74,13 +101,21 @@ function EnrolledCourse() {
   //   return `${hours}h ${minutes}m`;
   // }
 
+  if (loading) {
+    return <Loader />;
+  }
+
+  console.log("Rendering - enrolledCourses:", enrolledCourses);
+  console.log("Rendering - enrolledCourses.length:", enrolledCourses.length);
+  console.log("Rendering - enrolledCourses is array:", Array.isArray(enrolledCourses));
+
   return (
     <div className='text-white w-11/12 max-w-[80%] py-10 mx-auto'>
       <div>
         <h1 className='text-3xl text-richblack-50'>Enrolled Courses</h1>
         {
-          (enrolledCourses.length === 0) ? (
-            <div><p>You have not enrolled in any courses yet</p></div>
+          (!enrolledCourses || enrolledCourses.length === 0) ? (
+            <div className='mt-4'><p>You have not enrolled in any courses yet</p></div>
           ) : (
             <Table className='mt-10 border border-richblack-500'>
               <Thead className='border-b border-richblack-500 '>

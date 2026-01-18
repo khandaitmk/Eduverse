@@ -4,15 +4,15 @@ import RenderSteps from './RenderSteps'
 function AddCourses() {
 
   return (
-    <div className='relative text-white w-[85%] p-10 mx-auto'>
-        <div className='relative w-full flex gap-5'>
-          <div className=' flex flex-col gap-10 w-[80%]'>
-            <h1 className=' text-3xl font-semibold'>Add Course</h1>
+    <div className='relative text-white w-full lg:w-[85%] p-4 md:p-6 lg:p-10 mx-auto'>
+        <div className='relative w-full flex flex-col lg:flex-row gap-4 md:gap-5'>
+          <div className=' flex flex-col gap-6 md:gap-8 lg:gap-10 w-full lg:w-[80%]'>
+            <h1 className=' text-2xl md:text-3xl font-semibold'>Add Course</h1>
             <RenderSteps></RenderSteps>
           </div>
-          <div className='bg-richblack-800 max-w-[450px] p-4 rounded-md text-sm flex flex-col gap-5 text-richblack-50 h-fit sticky top-10'>
-            <p className=' text-lg text-start '>⚡Course Upload Tips</p>
-            <ul className='list-disc flex flex-col gap-2 pl-5'>
+          <div className='bg-richblack-800 w-full lg:max-w-[450px] p-4 md:p-5 rounded-md text-xs md:text-sm flex flex-col gap-4 md:gap-5 text-richblack-50 h-fit lg:sticky lg:top-10'>
+            <p className=' text-base md:text-lg text-start '>⚡Course Upload Tips</p>
+            <ul className='list-disc flex flex-col gap-2 pl-4 md:pl-5'>
               <li>Set the Course Price option or make it free.</li>
               <li>Standard size for the course thumbnail is 1024x576.</li>
               <li>Video section controls the course overview video.</li>

@@ -119,7 +119,9 @@ exports.getAllUserDetails=async (req,res) =>{
 // get enrolled courses
 exports.getAllEnrolledCourses = async(req,res) =>{
     try{
+        
         const userId=req.user.id;
+        // console.log(" User id :",userId);
         if(!userId){
             return res.status(400).json({
                 success:false,
@@ -151,8 +153,8 @@ exports.getAllEnrolledCourses = async(req,res) =>{
             });
         }
 
-        console.log(isUser);
-        console.log(isUser.courses);
+        // console.log("Enrolled courses fetched for user:", userId);
+        // console.log("Number of courses:", isUser.courses?.length || 0);
         // const courses = isUser?.courses;
         // console.log(courses);
 

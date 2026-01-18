@@ -24,21 +24,21 @@ function CourseList(props) {
         
     };
   return (
-    <div className='w-11/12 text-richblack-300'>
-        <table className="rounded-xl border border-richblack-800 w-full">
+    <div className='w-full text-richblack-300 overflow-x-auto'>
+        <table className="rounded-xl border border-richblack-800 w-full min-w-[600px]">
             <thead className=''>
-                <tr className=' border-b-[1px] border-richblack-700 px-4'>
-                    <th className='text-left p-2'>COURSES</th>
-                    <th className=' p-2'>DURATION</th>
-                    <th className=' p-2'>PRICE</th>
-                    <th className=' p-2'>ACTIONS</th>
+                <tr className=' border-b-[1px] border-richblack-700 px-2 md:px-4'>
+                    <th className='text-left p-2 text-xs md:text-sm'>COURSES</th>
+                    <th className=' p-2 text-xs md:text-sm hidden md:table-cell'>DURATION</th>
+                    <th className=' p-2 text-xs md:text-sm'>PRICE</th>
+                    <th className=' p-2 text-xs md:text-sm'>ACTIONS</th>
                 </tr>
             </thead>
             <tbody>
                 {
                     courses?.length === 0 ? (
                 <tr>
-                    <td className="py-10 text-center text-2xl font-medium text-richblack-100">
+                    <td colSpan="4" className="py-10 text-center text-lg md:text-2xl font-medium text-richblack-100">
                     No courses found
                     {/* TODO: Need to change this state */}
                     </td>
@@ -47,29 +47,29 @@ function CourseList(props) {
                 ( 
                         courses?.map((item)=>(
                             <tr key={item._id} className='border-b border-richblack-800'>
-                                <td className=' p-8 '>
-                                    <div className='flex gap-5'>
+                                <td className=' p-4 md:p-6 lg:p-8'>
+                                    <div className='flex flex-col sm:flex-row gap-3 md:gap-5'>
                                         <div>
-                                            <div className='w-50'><img className=' rounded-md w-50' src={item.thumbnail} alt="" /></div>
+                                            <div className='w-32 md:w-40 lg:w-50'><img className=' rounded-md w-full h-auto' src={item.thumbnail} alt="" /></div>
                                         </div>
-                                        <div className='flex flex-col justify-between'>
-                                            <p className=' text-white text-lg font-semibold'>{item.courseName}</p>
-                                            <p className='text-sm'>{item.courseDescription}</p>
-                                            <p className='text-[11px] w-fit '>{(item.status ==="Published")?(
+                                        <div className='flex flex-col justify-between gap-2'>
+                                            <p className=' text-white text-base md:text-lg font-semibold'>{item.courseName}</p>
+                                            <p className='text-xs md:text-sm line-clamp-2'>{item.courseDescription}</p>
+                                            <p className='text-[10px] md:text-[11px] w-fit '>{(item.status ==="Published")?(
                                             <div className='flex items-center gap-1 p-1 bg-richblack-800 rounded-full px-2 text-yellow-50'>
-                                                <FaCircleCheck></FaCircleCheck>
-                                                <p>{item.status}</p>
+                                                <FaCircleCheck className="text-xs"></FaCircleCheck>
+                                                <p className="text-xs">{item.status}</p>
                                             </div>
                                             ):(
                                             <div className='flex items-center gap-1 p-1 bg-richblack-800 rounded-full px-2 text-red-500'>
-                                                <AiFillClockCircle></AiFillClockCircle>
-                                                <p>{item.status}</p>
+                                                <AiFillClockCircle className="text-xs"></AiFillClockCircle>
+                                                <p className="text-xs">{item.status}</p>
                                             </div>
                                             )}</p>
                                         </div>
                                     </div>
                                 </td>
-                                <td className='text-center'>
+                                <td className='text-center text-sm md:text-base hidden md:table-cell'>
                                     {/* {
                                         item.courseContent.map((i)=>{
                                             return(
@@ -80,13 +80,13 @@ function CourseList(props) {
                                     } */}
                                     baki hai
                                 </td>
-                                <td className='text-center'>
-                                    <p>{item.price}</p>
+                                <td className='text-center text-sm md:text-base'>
+                                    <p>Rs. {item.price}</p>
                                 </td>
                                 <td className='text-center'>
-                                    <div className=' flex gap-3 justify-center'>
-                                        <button className=' cursor-pointer' onClick={()=>editHandler(item)}><MdModeEdit size={25}></MdModeEdit> </button>
-                                        <button className=' cursor-pointer' onClick={deleteHandler}><MdDelete size={25}></MdDelete> </button>
+                                    <div className=' flex gap-2 md:gap-3 justify-center'>
+                                        <button className=' cursor-pointer hover:text-yellow-50 transition-colors' onClick={()=>editHandler(item)}><MdModeEdit size={20} className="md:w-6 md:h-6"></MdModeEdit> </button>
+                                        <button className=' cursor-pointer hover:text-red-500 transition-colors' onClick={deleteHandler}><MdDelete size={20} className="md:w-6 md:h-6"></MdDelete> </button>
                                     </div>
                                 </td>
                             </tr>

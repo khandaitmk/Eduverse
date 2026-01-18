@@ -4,9 +4,10 @@ exports.uploadFile = async (file,folder,q) =>{
             const option={
                 folder:folder,
                 resource_type:"auto",
-                quality:q
+                quality:q,chunk_size: 6000000,
+                eager_async: true,
             }
-            const result = await cloudinary.uploader.upload(file.tempFilePath,option);
+            const result = await cloudinary.uploader.upload_large(file.tempFilePath,option);
             return result;
         } catch(error){
             console.error(error);

@@ -7,22 +7,26 @@ function Cart() {
   const dispatch = useDispatch();
 
   return (
-    <div className=' text-white w-11/12 mx-auto p-10 flex flex-col gap-5'>
-      <h1 className=' text-3xl font-semibold'>Cart</h1>
-      <div className=' flex flex-col gap-5'>
+    <div className=' text-white w-full lg:w-11/12 mx-auto p-4 md:p-6 lg:p-10 flex flex-col gap-4 md:gap-5'>
+      <h1 className=' text-2xl md:text-3xl font-semibold'>Cart</h1>
+      <div className=' flex flex-col gap-4 md:gap-5'>
         <div className=' flex flex-col gap-2'>
-          <p>{totalItems} course in cart</p>
+          <p className="text-sm md:text-base">{totalItems} course in cart</p>
           <div className='h-[1px] w-full bg-richblack-400'></div>
         </div>
       {
         (cart?.length > 0) ?(
-          <div className=' flex gap-5 w-full'>
-            <RenderCartCourse />
-            <div className='w-[1px] bg-richblack-500'></div>
-            <RenderTotalAmount></RenderTotalAmount>
+          <div className=' flex flex-col lg:flex-row gap-4 md:gap-5 w-full'>
+            <div className="flex-1">
+              <RenderCartCourse />
+            </div>
+            <div className='w-full lg:w-[1px] h-[1px] lg:h-auto bg-richblack-500'></div>
+            <div className="lg:w-[350px]">
+              <RenderTotalAmount></RenderTotalAmount>
+            </div>
           </div>
         ):(
-          <p>Your cart is empty</p>
+          <p className="text-sm md:text-base">Your cart is empty</p>
         )
       }
       </div>

@@ -114,27 +114,49 @@
         }
     };
 
-    export async function getAllEnrolledCourses(token,dispatch){
+    // export async function getAllEnrolledCourses(token,dispatch){
         
-        let result=[];
-        try{
-            // console.log("token :",token);
-            const response = await apiConnector("GET",profileEndpoints.GET_USER_ENROLLED_COURSES_API,null,{
-                Authorization:`Bearer ${token}`
-            });
-            // console.log("result :",response);
+    //     let result=[];
+    //     try{
+    //         // console.log("token :",token);
+    //         const response = await apiConnector("GET",profileEndpoints.GET_USER_ENROLLED_COURSES_API,null,{
+    //             Authorization:`Bearer ${token}`
+    //         });
+    //         console.log("result :",response);
 
-            if(!response.data.success){
-                throw new Error("Failed to get the enrolled courses");
-            }
-            // console.log("enrolled data :",response.data);
-            result=response.data;
+    //         if(!response.data.success){
+    //             throw new Error("Failed to get the enrolled courses");
+    //         }
+    //         // console.log("enrolled data :",response.data);
+    //         result=response.data;
 
-        } catch(error){
-            console.log("ERROR in fetching the enrolled courses :",error);
-        }
-        return result;
-    };
+    //     } catch(error){
+    //         console.log("ERROR in fetching the enrolled courses :",error);
+    //     }
+    //     return result;
+    // };
+    export async function getAllEnrolledCourses(token) {
+  try {
+    const response = await apiConnector(
+      "GET",
+      profileEndpoints.GET_USER_ENROLLED_COURSES_API,
+      null,
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (!response?.data?.success) {
+      throw new Error("Failed to get the enrolled courses");
+    }
+
+    return response.data; 
+  } catch (error) {
+    console.error("ERROR in fetching the enrolled courses:", error);
+    throw error; 
+  }
+}
+
 
     export const contactUS = async(data,token) =>{
         try{
