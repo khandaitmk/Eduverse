@@ -1,16 +1,14 @@
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import HighlightText from "../components/core/Homepage/HighlightText";
-import { useState } from "react";
 import CTAButton from "../components/core/Homepage/CTAButton";
 import Banner from "../assets/images/banner.mp4"
 import CodeBlocks from "../components/core/Homepage/CodeBlocks";
-import HomeCard from "../components/core/Homepage/HomeCard";
 import Logo1 from "../assets/TimeLineLogo/Logo1.svg"
 import Logo2 from "../assets/TimeLineLogo/Logo2.svg"
 import Logo3 from "../assets/TimeLineLogo/Logo3.svg"
 import Logo4 from "../assets/TimeLineLogo/Logo4.svg"
-import Timelineimage from "../assets/images/Timelineimage.png"
+import Timelineimage from "../assets/images/TimelineImage.png"
 import LearningLanguageSection from "../components/core/Homepage/LearningLanguageSection";
 import BecomeAnInstructor from "../components/core/Homepage/BecomeAnInstructor";
 import Footer from "../components/core/Homepage/Footer";
