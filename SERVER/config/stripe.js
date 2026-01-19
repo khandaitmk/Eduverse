@@ -44,8 +44,8 @@ exports.createCheckoutSession = async(req,res)=>{
             payment_method_types: ["card"],
             line_items: lineItems,
             mode: "payment",
-            success_url: `http://localhost:3000/dashboard/enrolled-courses`,
-            cancel_url: `http://localhost:3000/dashboard/enrolled-courses`,
+            success_url: `    "https://eduverse-7era0d8s1-manish-khandaits-projects.vercel.app/dashboard/enrolled-courses`,
+            cancel_url: `https://eduverse-7era0d8s1-manish-khandaits-projects.vercel.app/dashboard/enrolled-courses`,
             customer_email: userEmail,
             metadata: { courses: JSON.stringify(courses), userId } // include userId for reliable enrollment
         });
