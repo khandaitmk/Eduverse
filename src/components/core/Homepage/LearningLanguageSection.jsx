@@ -1,6 +1,6 @@
-import React from 'react'
+
 import HighlightText from './HighlightText'
-import know_your_progress from "../../../assets/images/know_your_progress.png"
+import know_your_progress from "../../../assets/images/Know_your_progress.png"
 import compare_with_others from "../../../assets/images/compare_with_others.png"
 import plan_your_lessons from "../../../assets/images/plan_your_lessons.png"
 import CTAButton from './CTAButton'
