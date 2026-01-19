@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, matchPath, useNavigate } from 'react-router-dom'
 import download from "../../assets/Logo/download.webp"
 import { NavbarLinks } from '../../data/navbar-links'
@@ -6,10 +6,10 @@ import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaCartShopping } from "react-icons/fa6";
 import ProfileDropDown from '../core/auth/ProfileDropDown'
-import { apiConnector } from '../../services/apiConnector'
 import { categories } from '../../services/apis'
 import { FaChevronDown, FaBars, FaTimes } from "react-icons/fa";
 import { logOut } from '../../services/operations/authAPI'
+import { apiConnector } from '../../services/apiConnector'
 
 const Navbar = () => {
     const [subLinks,setSubLinks]=useState([]);
