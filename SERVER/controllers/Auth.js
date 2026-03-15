@@ -47,7 +47,6 @@ try{
     res.status(400).json({
         success:false,
         message:"Error sending OTP",
-        
     });
 }
 };
@@ -181,6 +180,7 @@ try{
 // change password
 exports.changePassword= async (req,res) => {
     try{
+        console.log(req.body);
         const {oldPassword,password}=req.body;
         if( !oldPassword || !password ){
             return res.status(400).json({

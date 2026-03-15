@@ -4,6 +4,7 @@ const {mailSender}=require("../util/mailSender");
 
 exports.resetPasswordToken=async (req,res) =>{
     try{
+        console.log("bug",req.body);
         const email=req.body.email.email;
         
         if(!email){
@@ -52,6 +53,7 @@ exports.resetPasswordToken=async (req,res) =>{
 exports.resetPassword=async (req,res)=>{
     try{
         // fetch the data
+        console.log("bug :" , req.body);
         const {password ,confirmPassword,token}=req.body;
         if(!password || !confirmPassword){
             return res.status(400).json({
