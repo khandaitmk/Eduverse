@@ -166,7 +166,7 @@ exports.getAllCourses= async (req,res) =>{
     try{
         // get all courses for the Courses model in the course array
          const allCourses=await Course.find({},{courseName:true,price:true,thumbnailImage:true,instructor:true,tag:true,ratingAndReviwes:true,studentsEnrolled:true})
-         .populate("Instructor").exec();
+         .populate("instructor").exec();
          return res.status(200).json({
              success:true,
              message:"data for all courses fetched successfully",
@@ -177,7 +177,8 @@ exports.getAllCourses= async (req,res) =>{
         console.log("Error :",error);
         return res.status(400).json({
             success:false,
-            message:"Failed to fetch the courses"
+            message:"Failed to fetch the courses",error,
+        
         });
     }
 };
