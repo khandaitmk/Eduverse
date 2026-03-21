@@ -37,6 +37,7 @@
     "react-stars": "^2.2.5",
     "react-super-responsive-table": "^6.0.2",
     "react-type-animation": "^3.2.0",
+    "resend": "^6.9.4",
     "swiper": "^12.0.2",
     "tailwind-scrollbar-hide": "^4.0.0"
   },
