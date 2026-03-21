@@ -1,22 +1,25 @@
-const { ApiClient, TransactionalEmailsApi, SendSmtpEmail } = require("@getbrevo/brevo");
+const brevo = require("@getbrevo/brevo");
 
-const client = ApiClient.instance;
-const apiKey = client.authentications["api-key"];
+let apiInstance = new brevo.TransactionalEmailsApi();
+let apiKey = apiInstance.authentications["apiKey"];
 apiKey.apiKey = process.env.BREVO_API_KEY;
-
-const transactionalEmailsApi = new TransactionalEmailsApi();
 
 exports.mailSender = async (mail, title, body) => {
     try {
-        const sendSmtpEmail = new SendSmtpEmail();
+        let sendSmtpEmail = new brevo.SendSmtpEmail();
+        sendSmtpEmail.sender = { name: "Eduverse", email: "manishkhandait05@gmail.com" };
         sendSmtpEmail.to = [{ email: mail }];
-        sendSmtpEmail.sender = { email: "manishkhandait05@gmail.com", name: "Eduverse" };
         sendSmtpEmail.subject = title;
         sendSmtpEmail.htmlContent = body;
 
-        const data = await transactionalEmailsApi.sendTransacEmail(sendSmtpEmail);
+        const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
         console.log("Email sent successfully: ", data);
     } catch (error) {
         console.log("Email error:", error.message);
     }
 };
+```
+
+Also make sure in Render your env variable is:
+```
+BREVO_API_KEY=your-brevo-api-key
