@@ -1,31 +1,19 @@
-require("dotenv").config();
-const brevo = require("@getbrevo/brevo");
+const { BrevoClient } = require("@getbrevo/brevo");
 
-// Correct initialization (as per docs)
-let defaultClient = brevo.ApiClient.instance;
-
-let apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = process.env.BREVO_API_KEY;
-
-let apiInstance = new brevo.TransactionalEmailsApi();
+const brevo = new BrevoClient({
+    apiKey: process.env.BREVO_API_KEY,
+});
 
 exports.mailSender = async (mail, title, body) => {
     try {
-        let sendSmtpEmail = new brevo.SendSmtpEmail();
-
-        sendSmtpEmail.sender = {
-            name: "Eduverse",
-            email: "manishkhandait05@gmail.com"
-        };
-
-        sendSmtpEmail.to = [{ email: mail }];
-        sendSmtpEmail.subject = title;
-        sendSmtpEmail.htmlContent = body;
-
-        const data = await apiInstance.sendTransacEmail(sendSmtpEmail);
-
-        console.log("Email sent:", data);
-    } catch (err) {
-        console.error(err);
+        const result = await brevo.transactionalEmails.sendTransacEmail({
+            subject: title,
+            htmlContent: body,
+            sender: { name: "Eduverse", email: "manishkhandait05@gmail.com" },
+            to: [{ email: mail }],
+        });
+        console.log("Email sent successfully: ", result);
+    } catch (error) {
+        console.log("Email error:", error.message);
     }
 };
