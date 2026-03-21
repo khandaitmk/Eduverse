@@ -8,7 +8,7 @@ exports.mailSender = async (mail, title, body) => {
             secure: true,
             auth: {
                 user: "resend",
-                pass: process.env.RESEND,
+                pass: process.env.RESEND_API,
             },
         });
 
