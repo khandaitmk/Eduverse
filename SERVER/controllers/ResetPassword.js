@@ -31,7 +31,7 @@ exports.resetPasswordToken=async (req,res) =>{
         const token=crypto.randomUUID();
         const updatedDetails=await User.findOneAndUpdate({email:email},{token:token,resetPasswordExpires:Date.now()+5*60*1000},{new:true});
         // create url
-        const url=`http://localhost:3000/update-password/${token}`;
+        const url=`${process.env.FRONTEND_URL}/update-password/${token}`;
         // now send the mail
         await mailSender(email,"Password reset Link",` password reset link : ${url}`);
 
